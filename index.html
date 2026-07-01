@@ -1,607 +1,487 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lễ Cưới & Đếm Ngược Ngày Trọng Đại</title>
-  
-  <!-- Premium elegant fonts from Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Invitation</title>
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f5f2ea;
+            --env-bg: #c3a67f;
+            --env-inside: #9f825c;
+            --env-flap: #cfb695;
+            --paper-color: #fffefb;
+            --gold: #d4af37;
+            --burgundy: #5c0632;
+            --text-color: #333333;
+            --shadow: rgba(45, 35, 20, 0.15);
+        }
 
-  <style>
-    /* -------------------------------------------------------------
-       DESIGN SYSTEM & VARIABLES
-       ------------------------------------------------------------- */
-    :root {
-      --color-bg: #151518;
-      --color-kraft: #d2b48c;
-      --color-kraft-dark: #b8976c;
-      --color-kraft-light: #e6cba5;
-      --color-paper: #FFFDFB;
-      --color-accent: #8a3033;
-      --color-slate: #2f3542;
-      --easing: cubic-bezier(0.4, 0, 0.2, 1);
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      background-color: var(--color-bg);
-      background-image: radial-gradient(rgba(210, 180, 140, 0.05) 1px, transparent 0);
-      background-size: 24px 24px;
-      font-family: 'Playfair Display', serif;
-      overflow: hidden;
-      perspective: 1200px;
-    }
+        body {
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            overflow: hidden;
+            perspective: 1200px;
+        }
 
-    /* -------------------------------------------------------------
-       BACKDROP EFFECT
-       ------------------------------------------------------------- */
-    .backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(10, 10, 12, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      z-index: 8;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.8s var(--easing);
-    }
-    .backdrop.is-active {
-      opacity: 1;
-      pointer-events: auto;
-    }
+        .wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 460px;
+            height: 310px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
 
-    /* -------------------------------------------------------------
-       ENVELOPE STRUCTURE
-       ------------------------------------------------------------- */
-    .envelope-container {
-      position: relative;
-      width: 400px;
-      height: 280px;
-      transform-style: preserve-3d;
-      cursor: pointer;
-      z-index: 5;
-      transition: transform 0.8s var(--easing);
-    }
+        /* 3D Envelope Container */
+        .envelope-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            box-shadow: 0 12px 35px var(--shadow);
+            border-radius: 6px;
+            background-color: var(--env-bg);
+            transform: rotateX(0deg) translateY(0);
+        }
 
-    /* Tabletop tilt flat when open */
-    .envelope-container.is-open {
-      transform: rotateX(25deg) scale(0.95) translateY(30px);
-    }
+        /* Envelope inside shadows */
+        .envelope-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--env-inside);
+            border-radius: 6px;
+            z-index: 1;
+        }
 
-    .envelope-inside {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, #cfa878 0%, #a37f53 100%);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 6px;
-      z-index: 1;
-    }
+        /* Envelope Flap */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 52%;
+            background-color: var(--env-flap);
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            transform-origin: top;
+            z-index: 4;
+            transform: rotateX(0deg);
+        }
 
-    .envelope-flap {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 52%;
-      background-color: var(--color-kraft-light);
-      clip-path: polygon(0 0, 50% 100%, 100% 0);
-      transform-origin: top;
-      z-index: 4;
-      transition: transform 0.6s var(--easing), z-index 0.05s linear 0.3s;
-      transform: rotateX(0deg);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+        /* Envelope Pocket */
+        .envelope-pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--env-bg);
+            clip-path: polygon(0 40%, 50% 65%, 100% 40%, 100% 100%, 0 100%);
+            border-radius: 0 0 6px 6px;
+            z-index: 3;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.04);
+        }
 
-    /* Flip flap open and adjust z-index to fall behind inside wall */
-    .envelope-container.is-open .envelope-flap {
-      transform: rotateX(180deg);
-      z-index: 1;
-    }
+        /* Invitation Letter Card */
+        .letter {
+            position: absolute;
+            bottom: 6px;
+            left: 3%;
+            width: 94%;
+            height: 90%;
+            background-color: var(--paper-color);
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            z-index: 2;
+            padding: 8px;
+            transform: translateY(0) scale(1);
+        }
 
-    .envelope-pocket {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: var(--color-kraft);
-      clip-path: polygon(0 35%, 50% 60%, 100% 35%, 100% 100%, 0 100%);
-      border-radius: 0 0 6px 6px;
-      z-index: 3;
-      box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.08);
-    }
+        .letter-border {
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            height: 100%;
+            width: 100%;
+            padding: 10px;
+            position: relative;
+        }
 
-    /* -------------------------------------------------------------
-       INVITATION LETTER
-       ------------------------------------------------------------- */
-    .letter {
-      position: absolute;
-      bottom: 6px;
-      left: 4%;
-      width: 92%;
-      height: 90%;
-      background-color: var(--color-paper);
-      border-radius: 4px;
-      z-index: 2;
-      padding: 16px;
-      box-sizing: border-box;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-      border: 1px solid rgba(210, 180, 140, 0.3);
-      transition: transform 0.8s var(--easing), z-index 0s linear 0.4s, box-shadow 0.8s var(--easing);
-      transform: translateY(0) scale(1);
-    }
+        .letter-content {
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
 
-    /* Step 2: Slide up from pocket and scale slightly */
-    .letter.is-slid {
-      transform: translateY(-55%) scale(1.05);
-      z-index: 10;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    }
+        /* Gold Corner Ornaments */
+        .corner {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-color: var(--gold);
+            border-style: solid;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        .c-top-left { top: 5px; left: 5px; border-width: 1px 0 0 1px; }
+        .c-top-right { top: 5px; right: 5px; border-width: 1px 1px 0 0; }
+        .c-bottom-left { bottom: 5px; left: 5px; border-width: 0 0 1px 1px; }
+        .c-bottom-right { bottom: 5px; right: 5px; border-width: 0 1px 1px 0; }
 
-    /* Step 3: Zoom full screen modal overlay */
-    .letter.is-zoomed {
-      transform: translateY(-15%) scale(2.2);
-      z-index: 10;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(210, 180, 140, 0.15);
-    }
+        /* Letter Inner Layout Grid */
+        .letter-grid {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
 
-    .letter-border {
-      border: 1px solid rgba(138, 48, 51, 0.2);
-      border-radius: 3px;
-      height: 100%;
-      width: 100%;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-sizing: border-box;
-      padding: 8px;
-    }
+        .col-left {
+            flex: 1;
+            border-right: 1px solid rgba(212, 175, 55, 0.2);
+            padding-right: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
 
-    /* Gold Card Corner Ornaments */
-    .corner-ornament {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      border-color: var(--color-kraft-dark);
-      border-style: solid;
-      opacity: 0.5;
-    }
-    .ornament-top-left { top: 4px; left: 4px; border-width: 1.5px 0 0 1.5px; }
-    .ornament-top-right { top: 4px; right: 4px; border-width: 1.5px 1.5px 0 0; }
-    .ornament-bottom-left { bottom: 4px; left: 4px; border-width: 0 0 1.5px 1.5px; }
-    .ornament-bottom-right { bottom: 4px; right: 4px; border-width: 0 1.5px 1.5px 0; }
+        .col-right {
+            flex: 1.35;
+            padding-left: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+        }
 
-    /* -------------------------------------------------------------
-       INVITATION CONTENT
-       ------------------------------------------------------------- */
-    .letter-content {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      box-sizing: border-box;
-    }
+        /* Invitation Typography */
+        .badge {
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            color: #777;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
 
-    .letter-badge {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.55rem;
-      font-weight: 600;
-      letter-spacing: 2px;
-      color: var(--color-kraft-dark);
-      margin: 0 0 4px 0;
-    }
+        .names {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+            margin-bottom: 8px;
+        }
 
-    .letter-names {
-      font-family: 'Great Vibes', cursive;
-      font-size: 1.4rem;
-      color: var(--color-accent);
-      margin: 0 0 6px 0;
-    }
+        .names .name {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--burgundy);
+            white-space: nowrap;
+        }
 
-    /* Small/Large message blocks switching */
-    .letter-body-short {
-      font-size: 0.65rem;
-      color: var(--color-slate);
-      font-style: italic;
-      opacity: 1;
-      max-height: 50px;
-      transition: opacity 0.4s var(--easing), max-height 0.4s var(--easing);
-    }
-    .letter.is-zoomed .letter-body-short {
-      opacity: 0;
-      max-height: 0;
-      overflow: hidden;
-      margin: 0;
-    }
+        .names .amp {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.4rem;
+            color: var(--gold);
+            line-height: 0.8;
+        }
 
-    .letter-body-full {
-      opacity: 0;
-      max-height: 0;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      transition: opacity 0.5s var(--easing) 0.2s, max-height 0s linear 0.2s;
-    }
-    .letter.is-zoomed .letter-body-full {
-      opacity: 1;
-      max-height: 600px;
-      overflow: visible;
-    }
+        .divider-gold {
+            color: var(--gold);
+            font-size: 0.6rem;
+            letter-spacing: 4px;
+            opacity: 0.8;
+        }
 
-    .invitation-text {
-      font-size: 0.48rem;
-      line-height: 1.4;
-      color: var(--color-slate);
-      max-width: 170px;
-      margin: 4px 0 10px 0;
-    }
+        .invitation-hdr {
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            color: var(--burgundy);
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
 
-    .details-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      width: 100%;
-      max-width: 170px;
-      background-color: rgba(210, 180, 140, 0.08);
-      border: 1px solid rgba(210, 180, 140, 0.15);
-      border-radius: 4px;
-      padding: 8px;
-      margin-bottom: 8px;
-      box-sizing: border-box;
-    }
+        .invitation-txt {
+            font-size: 0.62rem;
+            color: #555;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            max-width: 220px;
+            font-family: 'Cormorant Garamond', serif;
+        }
 
-    .detail-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.45rem;
-      font-weight: 500;
-    }
+        .details-box {
+            background-color: rgba(253, 244, 245, 0.4);
+            border: 1px solid rgba(212, 175, 55, 0.12);
+            border-radius: 4px;
+            padding: 6px 8px;
+            margin-bottom: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            width: 100%;
+        }
 
-    .detail-item strong {
-      color: var(--color-accent);
-      letter-spacing: 0.5px;
-    }
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 4px;
+            text-align: left;
+        }
 
-    .detail-item span {
-      color: var(--color-slate);
-    }
+        .lbl {
+            font-size: 0.5rem;
+            letter-spacing: 1px;
+            color: #777;
+            font-weight: 600;
+            width: 55px;
+            flex-shrink: 0;
+        }
 
-    .signature {
-      font-family: 'Great Vibes', cursive;
-      font-size: 1.1rem;
-      color: var(--color-accent);
-      margin: 2px 0 0 0;
-    }
+        .txt {
+            font-size: 0.55rem;
+            color: var(--burgundy);
+            font-weight: 500;
+        }
 
-    .letter-close {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      background: none;
-      border: none;
-      font-size: 0.8rem;
-      color: #aaa;
-      cursor: pointer;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s var(--easing), color 0.2s var(--easing);
-      z-index: 12;
-    }
-    .letter.is-zoomed .letter-close {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .letter-close:hover {
-      color: var(--color-accent);
-    }
+        .signature {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.5rem;
+            color: var(--gold);
+            line-height: 1;
+        }
 
-    /* -------------------------------------------------------------
-       WET WAX SEAL EMBELLISHMENT
-       ------------------------------------------------------------- */
-    .wax-seal {
-      position: absolute;
-      top: 52%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(1);
-      width: 50px;
-      height: 50px;
-      background: radial-gradient(circle, #eec778 40%, #c49949 100%);
-      border-radius: 50%;
-      z-index: 5;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.18), inset 0 2px 3px rgba(255,255,255,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.3s var(--easing), transform 0.4s var(--easing);
-    }
-    .wax-seal:hover {
-      transform: translate(-50%, -50%) scale(1.08);
-    }
-    .seal-inner {
-      font-family: 'Great Vibes', cursive;
-      font-size: 0.75rem;
-      font-weight: bold;
-      color: var(--color-accent);
-      border: 1px dashed rgba(138, 48, 51, 0.3);
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        /* Controls */
+        .controls {
+            margin-top: 50px;
+            z-index: 10;
+        }
 
-    /* Seal drop animation when open */
-    .envelope-container.is-open .wax-seal {
-      opacity: 0;
-      transform: translate(-50%, 30px) rotate(15deg) scale(0.8);
-      pointer-events: none;
-      transition: opacity 0.3s var(--easing), transform 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
-    }
+        .btn-replay {
+            background-color: var(--burgundy);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(92, 6, 50, 0.2);
+            transition: transform 0.2s, background-color 0.2s;
+            font-family: 'Playfair Display', serif;
+        }
 
-    /* -------------------------------------------------------------
-       CONTROLS & ACTION BUTTONS
-       ------------------------------------------------------------- */
-    .controls {
-      margin-top: 40px;
-      z-index: 10;
-      display: flex;
-      gap: 16px;
-    }
+        .btn-replay:hover {
+            background-color: #450324;
+            transform: translateY(-2px);
+        }
 
-    .btn-replay {
-      background-color: transparent;
-      border: 1px solid rgba(210, 180, 140, 0.4);
-      color: var(--color-kraft-light);
-      padding: 10px 24px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.75rem;
-      letter-spacing: 1.5px;
-      font-weight: 500;
-      text-transform: uppercase;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.3s var(--easing);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .btn-replay:hover {
-      background-color: var(--color-kraft-light);
-      color: var(--color-bg);
-      border-color: var(--color-kraft-light);
-      box-shadow: 0 6px 12px rgba(230, 203, 165, 0.2);
-    }
+        /* ANIMATION TIMELINES (CSS KEYFRAMES + TRANSITIONS) */
+        
+        /* 1. Flap opens first (0.0s to 0.8s) */
+        .wrapper.animate .envelope-flap {
+            animation: flapOpen 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
 
-    /* -------------------------------------------------------------
-       ANIMATION RESET CLASS
-       ------------------------------------------------------------- */
-    .no-transition *,
-    .no-transition *::before,
-    .no-transition *::after {
-      transition: none !important;
-      animation: none !important;
-    }
+        @keyframes flapOpen {
+            0% { transform: rotateX(0deg); z-index: 4; }
+            45% { transform: rotateX(90deg); z-index: 4; }
+            46% { transform: rotateX(91deg); z-index: 1; }
+            100% { transform: rotateX(180deg); z-index: 1; }
+        }
 
-    /* -------------------------------------------------------------
-       RESPONSIVE ADJUSTMENTS
-       ------------------------------------------------------------- */
-    @media (max-width: 768px) {
-      .envelope-container {
-        transform: scale(0.85);
-      }
-      .envelope-container.is-open {
-        transform: rotateX(25deg) scale(0.8) translateY(20px);
-      }
-      .letter.is-zoomed {
-        transform: translateY(-20%) scale(1.55);
-      }
-    }
+        /* 2. Letter flies out and scales up (0.6s to 2.0s) */
+        .wrapper.animate .letter {
+            animation: letterFly 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.6s;
+        }
 
-    @media (max-width: 480px) {
-      .envelope-container {
-        transform: scale(0.72);
-      }
-      .envelope-container.is-open {
-        transform: rotateX(25deg) scale(0.68) translateY(10px);
-      }
-      .letter.is-zoomed {
-        transform: translateY(-20%) scale(1.3);
-      }
-    }
-  </style>
+        @keyframes letterFly {
+            0% { transform: translateY(0) scale(1); z-index: 2; }
+            35% { transform: translateY(-55%) scale(1.05); z-index: 5; box-shadow: 0 -5px 15px rgba(0,0,0,0.06); }
+            100% { transform: translateY(-118%) scale(1.65); z-index: 5; box-shadow: 0 15px 35px rgba(0,0,0,0.15), 0 0 20px rgba(212, 175, 55, 0.15); }
+        }
+
+        /* 3. Envelope body tilts backward for 3D realism (1.0s to 1.8s) */
+        .wrapper.animate .envelope-container {
+            animation: envTilt 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards 1.0s;
+        }
+
+        @keyframes envTilt {
+            0% { transform: rotateX(0deg) translateY(0); }
+            100% { transform: rotateX(22deg) translateY(35px) scale(0.9); }
+        }
+
+        /* 4. Text content inside letter fades in (1.5s to 2.1s) */
+        .wrapper.animate .letter-content {
+            animation: textFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards 1.5s;
+        }
+
+        @keyframes textFadeIn {
+            0% { opacity: 0; transform: translateY(12px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* MOBILE RESPONSIVE ADAPTATIONS */
+        @media (max-width: 600px) {
+            .wrapper {
+                max-width: 320px;
+                height: 220px;
+            }
+            .wrapper.animate .letter {
+                animation: letterFlyMobile 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.6s;
+            }
+            .wrapper.animate .envelope-container {
+                animation: envTiltMobile 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards 1.0s;
+            }
+            .letter-grid {
+                flex-direction: column;
+                gap: 6px;
+                justify-content: center;
+            }
+            .col-left {
+                border-right: none;
+                border-bottom: 1px dashed rgba(212, 175, 55, 0.15);
+                padding-right: 0;
+                padding-bottom: 6px;
+                width: 100%;
+                height: auto;
+            }
+            .col-right {
+                padding-left: 0;
+                padding-top: 6px;
+                width: 100%;
+                height: auto;
+            }
+            .names .name { font-size: 0.8rem; }
+            .names .amp { font-size: 1.1rem; }
+            .invitation-hdr { font-size: 0.65rem; }
+            .invitation-txt { font-size: 0.55rem; max-width: 100%; }
+            .details-box { padding: 4px 6px; }
+            .lbl { width: 45px; font-size: 0.45rem; }
+            .txt { font-size: 0.48rem; }
+            .signature { font-size: 1.1rem; }
+        }
+
+        @keyframes letterFlyMobile {
+            0% { transform: translateY(0) scale(1); z-index: 2; }
+            35% { transform: translateY(-50%) scale(1.02); z-index: 5; box-shadow: 0 -5px 12px rgba(0,0,0,0.06); }
+            100% { transform: translateY(-90%) scale(1.12); z-index: 5; box-shadow: 0 10px 25px rgba(0,0,0,0.12), 0 0 15px rgba(212, 175, 55, 0.1); }
+        }
+
+        @keyframes envTiltMobile {
+            0% { transform: rotateX(0deg) translateY(0); }
+            100% { transform: rotateX(15deg) translateY(20px) scale(0.95); }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Backdrop overlay when letter zoomed -->
-  <div class="backdrop" id="backdrop"></div>
+    <div class="wrapper" id="wrapper">
+        <div class="envelope-container">
+            <!-- Envelope Flap -->
+            <div class="envelope-flap"></div>
+            <!-- Envelope Pocket -->
+            <div class="envelope-pocket"></div>
+            <!-- Invitation Letter -->
+            <div class="letter">
+                <div class="letter-border">
+                    <div class="corner c-top-left"></div>
+                    <div class="corner c-top-right"></div>
+                    <div class="corner c-bottom-left"></div>
+                    <div class="corner c-bottom-right"></div>
 
-  <!-- Main Envelope Container -->
-  <div class="envelope-container" id="envelope">
-    <!-- Flap top -->
-    <div class="envelope-flap"></div>
-    
-    <!-- Inside Back Wall -->
-    <div class="envelope-inside"></div>
-    
-    <!-- Floating Letter Card -->
-    <div class="letter" id="letter">
-      <div class="letter-border">
-        <div class="corner-ornament ornament-top-left"></div>
-        <div class="corner-ornament ornament-top-right"></div>
-        <div class="corner-ornament ornament-bottom-left"></div>
-        <div class="corner-ornament ornament-bottom-right"></div>
-        
-        <button class="letter-close" id="letterClose" aria-label="Đóng thư">×</button>
+                    <div class="letter-content">
+                        <div class="letter-grid">
+                            <!-- Left: Bride & Groom -->
+                            <div class="col-left">
+                                <span class="badge">SAVE THE DATE</span>
+                                <div class="names">
+                                    <span class="name">Lê Phạm Hoàng Mây</span>
+                                    <span class="amp">&</span>
+                                    <span class="name">Nguyễn Đức Hùng</span>
+                                </div>
+                                <div class="divider-gold">✦ ✦ ✦</div>
+                            </div>
 
-        <div class="letter-content">
-          <span class="letter-badge">SAVE THE DATE</span>
-          <h2 class="letter-names">Mây & Hùng</h2>
-          
-          <!-- Small/Short invitation intro -->
-          <div class="letter-body-short">
-            <p>Trân Trọng Kính Mời</p>
-          </div>
-          
-          <!-- Detailed invitation content (revealed on zoom) -->
-          <div class="letter-body-full">
-            <p class="invitation-text">
-              Đến dự buổi tiệc chung vui, chứng kiến khoảnh khắc chúng tôi chính thức nên duyên vợ chồng.
-            </p>
-            <div class="details-grid">
-              <div class="detail-item">
-                <strong>NGÀY CƯỚI</strong>
-                <span>Thứ Sáu, 24.07.2026</span>
-              </div>
-              <div class="detail-item">
-                <strong>THỜI GIAN</strong>
-                <span>17:30 Đón Khách | 18:00 Khai Tiệc</span>
-              </div>
-              <div class="detail-item">
-                <strong>ĐỊA ĐIỂM</strong>
-                <span>Grand Palace, Sảnh Platinum</span>
-              </div>
+                            <!-- Right: Invitation Info -->
+                            <div class="col-right">
+                                <h3 class="invitation-hdr">TRÂN TRỌNG KÍNH MỜI</h3>
+                                <p class="invitation-txt">
+                                    Đến dự buổi tiệc thành hôn chung vui cùng gia đình chúng tôi tại trung tâm tổ chức sự kiện.
+                                </p>
+                                <div class="details-box">
+                                    <div class="row">
+                                        <span class="lbl">THỜI GIAN:</span>
+                                        <span class="txt">17:30 | Thứ Sáu, 24.07.2026</span>
+                                    </div>
+                                    <div class="row">
+                                        <span class="lbl">ĐỊA ĐIỂM:</span>
+                                        <span class="txt">Grand Palace, Sảnh Platinum</span>
+                                    </div>
+                                    <div class="row">
+                                        <span class="lbl">ĐỊA CHỈ:</span>
+                                        <span class="txt">142/18 Cộng Hòa, Q. Tân Bình</span>
+                                    </div>
+                                </div>
+                                <p class="signature">Mây & Hùng</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p class="signature">Mây & Hùng</p>
-          </div>
         </div>
-      </div>
     </div>
-    
-    <!-- Envelope pocket body -->
-    <div class="envelope-pocket"></div>
-    
-    <!-- Wax seal -->
-    <div class="wax-seal" id="seal">
-      <div class="seal-inner">M&H</div>
+
+    <div class="controls">
+        <button class="btn-replay" id="btn-replay">XEM LẠI</button>
     </div>
-  </div>
 
-  <!-- Controller actions -->
-  <div class="controls">
-    <button class="btn-replay" id="btnReplay">Replay</button>
-  </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const wrapper = document.getElementById('wrapper');
+            const replayBtn = document.getElementById('btn-replay');
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const envelope = document.getElementById('envelope');
-      const letter = document.getElementById('letter');
-      const backdrop = document.getElementById('backdrop');
-      const btnReplay = document.getElementById('btnReplay');
-      const letterClose = document.getElementById('letterClose');
-      
-      let state = 'closed'; // State machine: 'closed', 'opening', 'open', 'closing'
-      let timeouts = [];
+            // Plays envelope sequence: Flap (0s) -> Letter slide out (0.6s) -> Tilt (1.0s) -> Text fade (1.5s)
+            function playAnimation() {
+                wrapper.classList.remove('animate');
+                void wrapper.offsetWidth; // Force CSS reflow to restart keyframes
+                wrapper.classList.add('animate');
+            }
 
-      function clearAllTimeouts() {
-        timeouts.forEach(t => clearTimeout(t));
-        timeouts = [];
-      }
+            // Start animation automatically on page load
+            setTimeout(playAnimation, 500);
 
-      // Step-by-step trigger timelines
-      function openSequence() {
-        if (state !== 'closed') return;
-        state = 'opening';
-
-        // 1. Flip lid flap open (starts at 0s)
-        envelope.classList.add('is-open');
-
-        // 2. Slide letter up from inside (starts at 0.5s when flap is fully vertical/backwards)
-        timeouts.push(setTimeout(() => {
-          letter.classList.add('is-slid');
-        }, 500));
-
-        // 3. Zoom letter into modal (starts at 1.1s when slide-up is complete)
-        timeouts.push(setTimeout(() => {
-          letter.classList.add('is-zoomed');
-          backdrop.classList.add('is-active');
-          state = 'open';
-        }, 1100));
-      }
-
-      function closeSequence() {
-        if (state !== 'open') return;
-        state = 'closing';
-
-        // 1. Zoom out letter (starts at 0s)
-        letter.classList.remove('is-zoomed');
-        backdrop.classList.remove('is-active');
-
-        // 2. Slide letter back inside pocket (starts at 0.4s)
-        timeouts.push(setTimeout(() => {
-          letter.classList.remove('is-slid');
-        }, 400));
-
-        // 3. Flip lid flap closed (starts at 0.9s)
-        timeouts.push(setTimeout(() => {
-          envelope.classList.remove('is-open');
-          state = 'closed';
-        }, 900));
-      }
-
-      // Clicking envelope triggers open/close sequence
-      envelope.addEventListener('click', (e) => {
-        if (state === 'closed') {
-          openSequence();
-        } else if (state === 'open' && !e.target.closest('.letter-content')) {
-          closeSequence();
-        }
-      });
-
-      // Closing from the modal close icon
-      letterClose.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeSequence();
-      });
-
-      // Clicking background overlay closes it
-      backdrop.addEventListener('click', (e) => {
-        closeSequence();
-      });
-
-      // Reset and run sequence instantly
-      btnReplay.addEventListener('click', (e) => {
-        e.stopPropagation();
-        clearAllTimeouts();
-
-        // 1. Add no-transition reset
-        document.body.classList.add('no-transition');
-        envelope.classList.remove('is-open');
-        letter.classList.remove('is-slid', 'is-zoomed');
-        backdrop.classList.remove('is-active');
-        state = 'closed';
-
-        // Force browser render flush
-        void envelope.offsetHeight;
-
-        // 2. Remove reset tag and trigger open sequence
-        document.body.classList.remove('no-transition');
-        setTimeout(openSequence, 100);
-      });
-    });
-  </script>
+            // Controls
+            replayBtn.addEventListener('click', playAnimation);
+            wrapper.addEventListener('click', playAnimation);
+        });
+    </script>
 </body>
 </html>
