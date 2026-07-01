@@ -60,6 +60,7 @@
             border-radius: 6px;
             background-color: var(--env-bg);
             transform: rotateX(0deg) translateY(0);
+            will-change: transform;
         }
 
         /* Envelope inside shadows */
@@ -87,6 +88,7 @@
             transform-origin: top;
             z-index: 4;
             transform: rotateX(0deg);
+            will-change: transform;
         }
 
         /* Envelope Pocket */
@@ -112,10 +114,32 @@
             height: 90%;
             background-color: var(--paper-color);
             border-radius: 4px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
             z-index: 2;
             padding: 8px;
             transform: translateY(0) scale(1);
+            will-change: transform;
+        }
+
+        .letter::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+            z-index: -1;
+            opacity: 1;
+            will-change: opacity;
+        }
+
+        .letter::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15), 0 0 20px rgba(212, 175, 55, 0.15);
+            border-radius: 4px;
+            z-index: -1;
+            opacity: 0;
+            will-change: opacity;
         }
 
         .letter-border {
@@ -126,22 +150,11 @@
             position: relative;
         }
 
-        .letter-backdrop {
-            position: absolute;
-            top: -2000px;
-            left: -2000px;
-            width: 5000px;
-            height: 5000px;
-            background-color: rgba(15, 23, 42, 0.45);
-            opacity: 0;
-            z-index: 4;
-            pointer-events: none;
-        }
-
         .letter-content {
             width: 100%;
             height: 100%;
             opacity: 0;
+            will-change: transform, opacity;
         }
 
         /* Gold Corner Ornaments */
@@ -319,50 +332,53 @@
         
         /* 1. Flap opens first (0.0s to 0.8s) */
         .wrapper.animate .envelope-flap {
-            animation: flapOpen 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation: flapOpen 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
         @keyframes flapOpen {
             0% { transform: rotateX(0deg); z-index: 4; }
-            45% { transform: rotateX(90deg); z-index: 4; }
-            46% { transform: rotateX(91deg); z-index: 1; }
+            45% { transform: rotateX(95deg); z-index: 4; }
+            46% { transform: rotateX(96deg); z-index: 1; }
+            80% { transform: rotateX(185deg); z-index: 1; }
             100% { transform: rotateX(180deg); z-index: 1; }
         }
 
-        /* 2. Letter flies out and zooms to full screen modal (0.6s to 2.2s) */
+        /* 2. Letter flies out and scales up (0.6s to 2.0s) */
         .wrapper.animate .letter {
-            animation: letterFly 1.6s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.6s;
+            animation: letterFly 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.6s;
+        }
+
+        .wrapper.animate .letter::after {
+            animation: letterShadow 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.6s;
         }
 
         @keyframes letterFly {
-            0% { transform: translateY(0) scale(1); z-index: 2; }
-            35% { transform: translateY(-60%) scale(1.05); z-index: 5; box-shadow: 0 -5px 15px rgba(0,0,0,0.06); }
-            100% { transform: translateY(-15%) scale(2.2); z-index: 5; box-shadow: 0 20px 50px rgba(0,0,0,0.25), 0 0 35px rgba(212, 175, 55, 0.15); }
+            0% { transform: translateY(0) scale(1) rotateX(0deg) rotateY(0deg) skewX(0deg); z-index: 2; }
+            35% { transform: translateY(-55%) scale(1.05) rotateX(-12deg) rotateY(2deg) skewX(-2deg); z-index: 5; }
+            75% { transform: translateY(-122%) scale(1.68) rotateX(4deg) rotateY(-1deg) skewX(0.5deg); z-index: 5; }
+            100% { transform: translateY(-118%) scale(1.65) rotateX(0deg) rotateY(0deg) skewX(0deg); z-index: 5; }
+        }
+
+        @keyframes letterShadow {
+            0% { opacity: 0; }
+            35% { opacity: 0.3; }
+            100% { opacity: 1; }
         }
 
         /* 3. Envelope body tilts backward for 3D realism (1.0s to 1.8s) */
         .wrapper.animate .envelope-container {
-            animation: envTilt 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards 1.0s;
+            animation: envTilt 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards 1.0s;
         }
 
         @keyframes envTilt {
-            0% { transform: rotateX(0deg) translateY(0); }
-            100% { transform: rotateX(25deg) translateY(45px) scale(0.85); }
+            0% { transform: rotateX(0deg) translateY(0) scale(1); }
+            75% { transform: rotateX(24deg) translateY(38px) scale(0.88); }
+            100% { transform: rotateX(22deg) translateY(35px) scale(0.9); }
         }
 
-        /* 4. Backdrop blurs and dims background (1.2s to 2.0s) */
-        .wrapper.animate .letter-backdrop {
-            animation: backdropFade 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards 1.2s;
-        }
-
-        @keyframes backdropFade {
-            0% { opacity: 0; backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); }
-            100% { opacity: 1; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-        }
-
-        /* 5. Text content inside letter fades in (1.5s to 2.1s) */
+        /* 4. Text content inside letter fades in (1.5s to 2.1s) */
         .wrapper.animate .letter-content {
-            animation: textFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards 1.5s;
+            animation: textFadeIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards 1.5s;
         }
 
         @keyframes textFadeIn {
@@ -377,10 +393,13 @@
                 height: 220px;
             }
             .wrapper.animate .letter {
-                animation: letterFlyMobile 1.6s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.6s;
+                animation: letterFlyMobile 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.6s;
             }
             .wrapper.animate .envelope-container {
-                animation: envTiltMobile 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards 1.0s;
+                animation: envTiltMobile 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards 1.0s;
+            }
+            .letter::after {
+                box-shadow: 0 10px 25px rgba(0,0,0,0.12), 0 0 15px rgba(212, 175, 55, 0.1);
             }
             .letter-grid {
                 flex-direction: column;
@@ -412,14 +431,16 @@
         }
 
         @keyframes letterFlyMobile {
-            0% { transform: translateY(0) scale(1); z-index: 2; }
-            35% { transform: translateY(-55%) scale(1.02); z-index: 5; box-shadow: 0 -5px 12px rgba(0,0,0,0.06); }
-            100% { transform: translateY(-20%) scale(1.15); z-index: 5; box-shadow: 0 10px 25px rgba(0,0,0,0.12), 0 0 15px rgba(212, 175, 55, 0.1); }
+            0% { transform: translateY(0) scale(1) rotateX(0deg) rotateY(0deg) skewX(0deg); z-index: 2; }
+            40% { transform: translateY(-50%) scale(1.05) rotateX(-8deg) rotateY(1.5deg) skewX(-1.5deg); z-index: 5; }
+            75% { transform: translateY(-93%) scale(1.14) rotateX(3deg) rotateY(-0.5deg) skewX(0.4deg); z-index: 5; }
+            100% { transform: translateY(-90%) scale(1.12) rotateX(0deg) rotateY(0deg) skewX(0deg); z-index: 5; }
         }
 
         @keyframes envTiltMobile {
-            0% { transform: rotateX(0deg) translateY(0); }
-            100% { transform: rotateX(18deg) translateY(25px) scale(0.92); }
+            0% { transform: rotateX(0deg) translateY(0) scale(1); }
+            75% { transform: rotateX(17deg) translateY(22px) scale(0.94); }
+            100% { transform: rotateX(15deg) translateY(20px) scale(0.95); }
         }
     </style>
 </head>
@@ -431,8 +452,6 @@
             <div class="envelope-flap"></div>
             <!-- Envelope Pocket -->
             <div class="envelope-pocket"></div>
-            <!-- Backdrop that blurs and dims the envelope when zoomed -->
-            <div class="letter-backdrop"></div>
             <!-- Invitation Letter -->
             <div class="letter">
                 <div class="letter-border">
