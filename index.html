@@ -3,22 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding Invitation</title>
+    <title>Lê Phạm Hoàng Mây & Nguyễn Đức Hùng - Save The Date</title>
     <!-- Google Fonts for premium typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f5f2ea;
+            /* Palette from style.css */
+            --color-bg-primary: #FDFBF7;     /* Soft ivory cream */
+            --color-rose-light: #FCE7F3;     /* Pastel rose */
+            --color-burgundy-light: #881337; /* Rose-900 */
+            --color-burgundy-medium: #5C0632;/* Deep romantic burgundy */
+            --color-burgundy: #4C0519;       /* Rose-950 */
+            --color-gold: #CA8A04;           /* Warm gold */
+            --color-gold-metallic: #D4AF37;  /* Metallic gold */
+            --color-gold-hover: #C29F58;     /* Muted hover gold */
+            --color-slate-dark: #1E293B;     /* Slate-800 for body text */
+            --color-slate-light: #64748B;    /* Slate-500 for secondary text */
+            
+            /* Envelope custom colors */
             --env-bg: #c3a67f;
             --env-inside: #9f825c;
             --env-flap: #cfb695;
             --paper-color: #fffefb;
-            --gold: #d4af37;
-            --burgundy: #5c0632;
-            --text-color: #333333;
             --shadow: rgba(45, 35, 20, 0.15);
+            
+            /* Typography */
+            --font-title: 'Playfair Display', Georgia, serif;
+            --font-accent: 'Great Vibes', cursive;
+            --font-body: 'Cormorant Garamond', serif;
+            
+            /* Layout & Effects */
+            --shadow-soft: 0 10px 30px rgba(92, 6, 50, 0.05);
+            --shadow-medium: 0 15px 35px rgba(92, 6, 50, 0.1);
+            --shadow-gold: 0 0 20px rgba(212, 175, 55, 0.2);
+            --border-radius-sm: 8px;
+            --border-radius-md: 16px;
+            --border-radius-lg: 24px;
+            
+            /* Animations */
+            --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            --transition-quick: all 0.2s ease;
         }
 
         * {
@@ -27,56 +53,399 @@
             padding: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+            font-size: 18px; /* High legibility */
+        }
+
         body {
-            background-color: var(--bg-color);
+            font-family: var(--font-body);
+            background-color: var(--color-bg-primary);
+            color: var(--color-slate-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Playfair Display', serif;
-            overflow: hidden;
             perspective: 1200px;
         }
 
-        .wrapper {
+        /* Particle Canvas */
+        #blossom-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Aurora Glow Spots (Dynamic subtle light) */
+        .aurora-glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.45;
+            z-index: 0;
+            pointer-events: none;
+            mix-blend-mode: multiply;
+        }
+
+        .glow-1 {
+            top: 10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background-color: #FCE7F3; /* Soft pink */
+            animation: floatGlow1 25s infinite alternate ease-in-out;
+        }
+
+        .glow-2 {
+            bottom: 10%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background-color: #FEF3C7; /* Warm gold/yellow */
+            animation: floatGlow2 30s infinite alternate ease-in-out;
+        }
+
+        .glow-3 {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40vw;
+            height: 40vw;
+            background-color: #FDF2F8; /* Light rose */
+            opacity: 0.3;
+        }
+
+        @keyframes floatGlow1 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(8%, 10%) scale(1.1); }
+        }
+
+        @keyframes floatGlow2 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-10%, -8%) scale(1.15); }
+        }
+
+        /* Main content wrapper to sit above background effects */
+        main {
             position: relative;
+            z-index: 2;
+        }
+
+        .section-container {
             width: 100%;
-            max-width: 460px;
-            height: 310px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 100px 24px;
+        }
+
+        /* ==========================================================================
+           FLOATING AUDIO CONTROL
+           ========================================================================== */
+        .audio-control-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid var(--color-rose-light);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            box-shadow: var(--shadow-soft);
+            z-index: 999;
+            transition: var(--transition-smooth);
+            backdrop-filter: blur(8px);
         }
 
-        /* 3D Envelope Container */
-        .envelope-container {
+        .audio-control-container:hover {
+            transform: scale(1.1);
+            border-color: var(--color-gold-metallic);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .music-note-icon {
+            color: var(--color-burgundy-medium);
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .music-note-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .audio-control-container.playing .music-note-icon {
+            animation: rotateNote 4s linear infinite;
+            color: var(--color-gold-metallic);
+        }
+
+        @keyframes rotateNote {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ==========================================================================
+           SECTION 1: HERO / SAVE THE DATE
+           ========================================================================== */
+        .hero-section {
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+            position: relative;
+        }
+
+        .hero-content {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 60px 40px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-soft);
+            max-width: 650px;
+            width: 100%;
+            position: relative;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        /* Decorative Gold Corners */
+        .hero-content::before,
+        .hero-content::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--color-gold-metallic);
+            pointer-events: none;
+        }
+
+        .hero-content::before {
+            top: 15px;
+            left: 15px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .hero-content::after {
+            bottom: 15px;
+            right: 15px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-title);
+            font-size: 0.9rem;
+            letter-spacing: 6px;
+            color: var(--color-gold);
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .couple-names {
+            font-family: var(--font-title);
+            font-size: 2.8rem;
+            font-weight: 400;
+            color: var(--color-burgundy);
+            line-height: 1.2;
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .couple-names .name-first,
+        .couple-names .name-second {
+            display: block;
+        }
+
+        .couple-names .ampersand {
+            font-family: var(--font-accent);
+            font-size: 3.5rem;
+            color: var(--color-gold-metallic);
+            line-height: 0.8;
+        }
+
+        .hero-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .hero-divider .line {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--color-gold-metallic), transparent);
+            width: 80px;
+        }
+
+        .hero-divider .symbol {
+            color: var(--color-gold-metallic);
+            font-size: 0.8rem;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--color-slate-dark);
+            margin-bottom: 40px;
+            font-weight: 400;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-date {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-title);
+            font-size: 1.6rem;
+            color: var(--color-burgundy-medium);
+            border-top: 1px solid var(--color-rose-light);
+            border-bottom: 1px solid var(--color-rose-light);
+            padding: 12px 0;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        .hero-date .date-num {
+            font-weight: 600;
+        }
+
+        .hero-date .date-dot {
+            color: var(--color-gold-metallic);
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--color-slate-light);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            transition: var(--transition-smooth);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator svg {
+            color: var(--color-gold-metallic);
+        }
+
+        .scroll-indicator:hover {
+            color: var(--color-burgundy);
+        }
+
+        /* ==========================================================================
+           SECTION 2: INVITATION / ENVELOPE
+           ========================================================================== */
+        .invitation-section {
+            text-align: center;
+            position: relative;
+        }
+
+        .love-quote {
+            font-family: var(--font-body);
+            font-size: 1.35rem;
+            font-style: italic;
+            color: var(--color-burgundy-medium);
+            line-height: 1.6;
+            margin-bottom: 60px;
+            position: relative;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .love-quote::before,
+        .love-quote::after {
+            content: '“';
+            font-family: var(--font-title);
+            font-size: 3rem;
+            color: var(--color-rose-light);
+            position: absolute;
+            line-height: 1;
+        }
+
+        .love-quote::before {
+            left: -20px;
+            top: -15px;
+        }
+
+        .love-quote::after {
+            content: '”';
+            right: -20px;
+            bottom: -30px;
+        }
+
+        .envelope-instruction {
+            font-size: 0.95rem;
+            color: var(--color-slate-light);
+            margin-bottom: 24px;
+            letter-spacing: 1px;
+        }
+
+        /* Interactive Envelope Styling */
+        .envelope-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 460px;
+            height: 310px;
+            margin: 0 auto;
+            perspective: 1200px;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .envelope {
             position: relative;
             width: 100%;
             height: 100%;
-            transform-style: preserve-3d;
-            box-shadow: 0 12px 35px var(--shadow);
-            border-radius: 6px;
             background-color: var(--env-bg);
-            transform: rotateX(0deg) translateY(0);
+            border-radius: 6px;
+            box-shadow: 0 12px 35px var(--shadow);
+            transform-style: preserve-3d;
+            transition: transform 0.15s ease, box-shadow 0.3s ease;
             will-change: transform;
         }
 
-        /* Envelope inside shadows */
-        .envelope-container::after {
+        /* Envelope Back Background (inside representation) */
+        .envelope::after {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--env-inside);
+            background-color: var(--env-inside); /* Darker tone for inside */
             border-radius: 6px;
             z-index: 1;
         }
 
-        /* Envelope Flap */
+        /* Envelope Flap (top lid) */
         .envelope-flap {
             position: absolute;
             top: 0;
@@ -91,7 +460,7 @@
             will-change: transform;
         }
 
-        /* Envelope Pocket */
+        /* Envelope Pocket (lower front body) */
         .envelope-pocket {
             position: absolute;
             bottom: 0;
@@ -105,8 +474,46 @@
             box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.04);
         }
 
+        /* Wax Seal (clickable element) */
+        .wax-seal {
+            position: absolute;
+            top: 52%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 55px;
+            height: 55px;
+            background: radial-gradient(circle, var(--color-gold-metallic) 60%, var(--color-gold) 100%);
+            border-radius: 50%;
+            z-index: 5;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-smooth);
+        }
+
+        .wax-seal:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4), inset 0 2px 4px rgba(255,255,255,0.4);
+        }
+
+        .seal-inner {
+            font-family: var(--font-title);
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--color-burgundy);
+            border: 1px dashed rgba(92, 6, 50, 0.4);
+            width: 43px;
+            height: 43px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0.5px;
+        }
+
         /* Invitation Letter Card */
-        .letter {
+        .invitation-letter {
             position: absolute;
             bottom: 6px;
             left: 3%;
@@ -120,7 +527,7 @@
             will-change: transform;
         }
 
-        .letter::before {
+        .invitation-letter::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -131,7 +538,7 @@
             will-change: opacity;
         }
 
-        .letter::after {
+        .invitation-letter::after {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -162,7 +569,7 @@
             position: absolute;
             width: 12px;
             height: 12px;
-            border-color: var(--gold);
+            border-color: var(--color-gold-metallic);
             border-style: solid;
             opacity: 0.6;
             pointer-events: none;
@@ -223,22 +630,22 @@
         }
 
         .names .name {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-title);
             font-size: 0.95rem;
             font-weight: 600;
-            color: var(--burgundy);
+            color: var(--color-burgundy);
             white-space: nowrap;
         }
 
         .names .amp {
-            font-family: 'Great Vibes', cursive;
+            font-family: var(--font-accent);
             font-size: 1.4rem;
-            color: var(--gold);
+            color: var(--color-gold-metallic);
             line-height: 0.8;
         }
 
         .divider-gold {
-            color: var(--gold);
+            color: var(--color-gold-metallic);
             font-size: 0.6rem;
             letter-spacing: 4px;
             opacity: 0.8;
@@ -247,7 +654,7 @@
         .invitation-hdr {
             font-size: 0.8rem;
             letter-spacing: 1.5px;
-            color: var(--burgundy);
+            color: var(--color-burgundy);
             margin-bottom: 4px;
             font-weight: 600;
         }
@@ -258,7 +665,7 @@
             line-height: 1.4;
             margin-bottom: 8px;
             max-width: 220px;
-            font-family: 'Cormorant Garamond', serif;
+            font-family: var(--font-body);
         }
 
         .details-box {
@@ -292,14 +699,14 @@
 
         .txt {
             font-size: 0.55rem;
-            color: var(--burgundy);
+            color: var(--color-burgundy);
             font-weight: 500;
         }
 
         .signature {
-            font-family: 'Great Vibes', cursive;
+            font-family: var(--font-accent);
             font-size: 1.5rem;
-            color: var(--gold);
+            color: var(--color-gold-metallic);
             line-height: 1;
         }
 
@@ -310,7 +717,7 @@
         }
 
         .btn-replay {
-            background-color: var(--burgundy);
+            background-color: var(--color-burgundy-medium);
             color: white;
             border: none;
             padding: 10px 24px;
@@ -320,7 +727,7 @@
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(92, 6, 50, 0.2);
             transition: transform 0.2s, background-color 0.2s;
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-title);
         }
 
         .btn-replay:hover {
@@ -328,10 +735,204 @@
             transform: translateY(-2px);
         }
 
-        /* ANIMATION TIMELINES (CSS KEYFRAMES + TRANSITIONS) */
-        
+        /* ==========================================================================
+           SECTION 3: THÔNG TIN SỰ KIỆN
+           ========================================================================== */
+        .event-section {
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header-pre {
+            font-family: var(--font-accent);
+            font-size: 2.4rem;
+            color: var(--color-gold-metallic);
+            line-height: 1;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .section-title {
+            font-family: var(--font-title);
+            font-size: 2.2rem;
+            color: var(--color-burgundy);
+        }
+
+        .event-time-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: var(--border-radius-md);
+            padding: 30px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 40px;
+            transition: var(--transition-smooth);
+        }
+
+        .event-time-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--color-rose-light);
+        }
+
+        .time-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: var(--font-title);
+            font-size: 0.95rem;
+            letter-spacing: 3px;
+            color: var(--color-gold);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .time-header svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .time-detail-large {
+            font-family: var(--font-title);
+            font-size: 1.55rem;
+            color: var(--color-burgundy);
+            font-weight: 500;
+        }
+
+        /* Countdown Clock */
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 60px;
+        }
+
+        .countdown-item {
+            background: rgba(92, 6, 50, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: var(--border-radius-sm);
+            min-width: 75px;
+            padding: 12px 8px;
+            text-align: center;
+            box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.8);
+            transition: var(--transition-smooth);
+        }
+
+        .countdown-item:hover {
+            border-color: var(--color-gold-metallic);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .countdown-value {
+            display: block;
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--color-burgundy-medium);
+            line-height: 1.2;
+        }
+
+        .countdown-label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--color-slate-light);
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* ==========================================================================
+           FOOTER
+           ========================================================================== */
+        footer {
+            text-align: center;
+            padding: 60px 24px;
+            position: relative;
+            background: linear-gradient(to bottom, transparent, rgba(92, 6, 50, 0.02));
+        }
+
+        .footer-content {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .footer-initials {
+            font-family: var(--font-accent);
+            font-size: 3rem;
+            color: var(--color-gold-metallic);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .footer-date {
+            font-family: var(--font-title);
+            font-size: 1.05rem;
+            letter-spacing: 4px;
+            color: var(--color-burgundy-medium);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .footer-divider {
+            width: 40px;
+            height: 1px;
+            background-color: var(--color-rose-light);
+            margin: 0 auto 20px;
+        }
+
+        .footer-thankyou {
+            font-family: var(--font-title);
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--color-slate-light);
+        }
+
+        /* ==========================================================================
+           KEYFRAMES & ANIMATIONS
+           ========================================================================== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleUp {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-8px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-4px);
+            }
+        }
+
+        /* Envelope Animation Timelines */
         /* 1. Flap opens first (0.0s to 0.8s) */
-        .wrapper.animate .envelope-flap {
+        .envelope-wrapper.animate .envelope-flap {
             animation: flapOpen 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
@@ -344,11 +945,11 @@
         }
 
         /* 2. Letter flies out and scales up (0.6s to 2.0s) */
-        .wrapper.animate .letter {
+        .envelope-wrapper.animate .invitation-letter {
             animation: letterFly 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.6s;
         }
 
-        .wrapper.animate .letter::after {
+        .envelope-wrapper.animate .invitation-letter::after {
             animation: letterShadow 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.6s;
         }
 
@@ -366,7 +967,7 @@
         }
 
         /* 3. Envelope body tilts backward for 3D realism (1.0s to 1.8s) */
-        .wrapper.animate .envelope-container {
+        .envelope-wrapper.animate .envelope {
             animation: envTilt 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards 1.0s;
         }
 
@@ -377,7 +978,7 @@
         }
 
         /* 4. Text content inside letter fades in (1.5s to 2.1s) */
-        .wrapper.animate .letter-content {
+        .envelope-wrapper.animate .letter-content {
             animation: textFadeIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards 1.5s;
         }
 
@@ -386,26 +987,79 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* MOBILE RESPONSIVE ADAPTATIONS */
-        @media (max-width: 600px) {
-            .wrapper {
-                max-width: 320px;
+        /* Wax Seal falling physics when open */
+        .envelope-wrapper.animate .wax-seal {
+            opacity: 0;
+            transform: translate(-50%, 20%) rotate(25deg) scale(0.9);
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+
+        /* ==========================================================================
+           MEDIA QUERIES (Responsive adjustments)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            html {
+                font-size: 16px;
+            }
+            
+            .section-container {
+                padding: 60px 20px;
+            }
+            
+            .hero-content {
+                padding: 40px 24px;
+            }
+            
+            .couple-names {
+                font-size: 2.2rem;
+            }
+            
+            .couple-names .ampersand {
+                font-size: 2.8rem;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+                margin-bottom: 30px;
+            }
+            
+            /* Responsive Envelope and Letter */
+            .envelope-wrapper {
+                max-width: 330px;
                 height: 220px;
             }
-            .wrapper.animate .letter {
+            
+            .envelope-flap {
+                clip-path: polygon(0 0, 50% 100%, 100% 0);
+            }
+            
+            .envelope-pocket {
+                clip-path: polygon(0 40%, 50% 65%, 100% 40%, 100% 100%, 0 100%);
+            }
+
+            .envelope-wrapper.animate .invitation-letter {
                 animation: letterFlyMobile 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.6s;
             }
-            .wrapper.animate .envelope-container {
+
+            .envelope-wrapper.animate .envelope {
                 animation: envTiltMobile 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards 1.0s;
             }
-            .letter::after {
+
+            .invitation-letter::after {
                 box-shadow: 0 10px 25px rgba(0,0,0,0.12), 0 0 15px rgba(212, 175, 55, 0.1);
             }
+            
+            .letter-border {
+                padding: 10px 8px;
+            }
+            
             .letter-grid {
                 flex-direction: column;
                 gap: 6px;
                 justify-content: center;
             }
+            
             .col-left {
                 border-right: none;
                 border-bottom: 1px dashed rgba(212, 175, 55, 0.15);
@@ -414,12 +1068,14 @@
                 width: 100%;
                 height: auto;
             }
+            
             .col-right {
                 padding-left: 0;
                 padding-top: 6px;
                 width: 100%;
                 height: auto;
             }
+
             .names .name { font-size: 0.8rem; }
             .names .amp { font-size: 1.1rem; }
             .invitation-hdr { font-size: 0.65rem; }
@@ -428,6 +1084,41 @@
             .lbl { width: 45px; font-size: 0.45rem; }
             .txt { font-size: 0.48rem; }
             .signature { font-size: 1.1rem; }
+        }
+
+        @media (max-width: 480px) {
+            .countdown-container {
+                gap: 8px;
+            }
+            
+            .countdown-item {
+                min-width: 60px;
+                padding: 8px 4px;
+            }
+            
+            .countdown-value {
+                font-size: 1.4rem;
+            }
+            
+            .countdown-label {
+                font-size: 0.7rem;
+            }
+            
+            .envelope-wrapper {
+                max-width: 290px;
+                height: 195px;
+            }
+            
+            .wax-seal {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .seal-inner {
+                width: 35px;
+                height: 35px;
+                font-size: 0.65rem;
+            }
         }
 
         @keyframes letterFlyMobile {
@@ -446,69 +1137,209 @@
 </head>
 <body>
 
-    <div class="wrapper" id="wrapper">
-        <div class="envelope-container">
-            <!-- Envelope Flap -->
-            <div class="envelope-flap"></div>
-            <!-- Envelope Pocket -->
-            <div class="envelope-pocket"></div>
-            <!-- Invitation Letter -->
-            <div class="letter">
-                <div class="letter-border">
-                    <div class="corner c-top-left"></div>
-                    <div class="corner c-top-right"></div>
-                    <div class="corner c-bottom-left"></div>
-                    <div class="corner c-bottom-right"></div>
+    <!-- Ambient background canvas for floating blossom petals -->
+    <canvas id="blossom-canvas"></canvas>
 
-                    <div class="letter-content">
-                        <div class="letter-grid">
-                            <!-- Left: Bride & Groom -->
-                            <div class="col-left">
-                                <span class="badge">SAVE THE DATE</span>
-                                <div class="names">
-                                    <span class="name">Lê Phạm Hoàng Mây</span>
-                                    <span class="amp">&</span>
-                                    <span class="name">Nguyễn Đức Hùng</span>
-                                </div>
-                                <div class="divider-gold">✦ ✦ ✦</div>
-                            </div>
+    <!-- Aurora gradient background effects -->
+    <div class="aurora-glow glow-1"></div>
+    <div class="aurora-glow glow-2"></div>
+    <div class="aurora-glow glow-3"></div>
 
-                            <!-- Right: Invitation Info -->
-                            <div class="col-right">
-                                <h3 class="invitation-hdr">TRÂN TRỌNG KÍNH MỜI</h3>
-                                <p class="invitation-txt">
-                                    Đến dự buổi tiệc thành hôn chung vui cùng gia đình chúng tôi tại trung tâm tổ chức sự kiện.
-                                </p>
-                                <div class="details-box">
-                                    <div class="row">
-                                        <span class="lbl">THỜI GIAN:</span>
-                                        <span class="txt">17:30 | Thứ Sáu, 24.07.2026</span>
-                                    </div>
-                                    <div class="row">
-                                        <span class="lbl">ĐỊA ĐIỂM:</span>
-                                        <span class="txt">Grand Palace, Sảnh Platinum</span>
-                                    </div>
-                                    <div class="row">
-                                        <span class="lbl">ĐỊA CHỈ:</span>
-                                        <span class="txt">142/18 Cộng Hòa, Q. Tân Bình</span>
+    <!-- Floating Audio Control -->
+    <div class="audio-control-container" id="audio-control" title="Bật/Tắt Nhạc">
+        <div class="music-note-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-music">
+                <path d="M9 18V5l12-2v13" />
+                <circle cx="6" cy="18" r="3" />
+                <circle cx="18" cy="16" r="3" />
+            </svg>
+        </div>
+        <audio id="bg-music" loop preload="auto">
+            <!-- Elegant soft piano track -->
+            <source src="https://assets.codepen.io/4358584/An+Mhinn.mp3" type="audio/mp3" />
+        </audio>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main>
+        <!-- SECTION 1: HERO / SAVE THE DATE -->
+        <section id="hero" class="hero-section">
+            <div class="hero-content">
+                <p class="hero-subtitle">SAVE THE DATE</p>
+
+                <h1 class="couple-names">
+                    <span class="name-first">Lê Phạm Hoàng Mây</span>
+                    <span class="ampersand">&</span>
+                    <span class="name-second">Nguyễn Đức Hùng</span>
+                </h1>
+
+                <div class="hero-divider">
+                    <span class="line"></span>
+                    <span class="symbol">✦</span>
+                    <span class="line"></span>
+                </div>
+
+                <p class="hero-description">
+                    Chúng tôi vô cùng hạnh phúc được thông báo về ngày trọng đại của cuộc đời mình.<br />
+                    Sự hiện diện của bạn là món quà tuyệt vời nhất dành cho chúng tôi!
+                </p>
+
+                <div class="hero-date">
+                    <span class="date-num">24</span>
+                    <span class="date-dot">.</span>
+                    <span class="date-num">07</span>
+                    <span class="date-dot">.</span>
+                    <span class="date-num">2026</span>
+                </div>
+            </div>
+
+            <a href="#invitation" class="scroll-indicator" aria-label="Cuộn xuống để xem lời mời">
+                <span class="scroll-text">Xem Lời Mời</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
+                    <path d="m6 9 6 6 6-6" />
+                </svg>
+            </a>
+        </section>
+
+        <!-- SECTION 2: LỜI MỜI TRÂN TRỌNG -->
+        <section id="invitation" class="invitation-section">
+            <div class="section-container">
+                <blockquote class="love-quote">
+                    "Tình yêu không phải là nhìn chằm chằm vào nhau,<br />mà là cùng nhau nhìn về một hướng."
+                </blockquote>
+
+                <p class="envelope-instruction">
+                    Chạm vào phong bì hoặc nút xem lại để mở thư mời
+                </p>
+
+                <!-- Interactive Envelope -->
+                <div class="envelope-wrapper" id="wedding-envelope-wrapper">
+                    <div class="envelope" id="wedding-envelope">
+                        <!-- Envelope Front Flap (folds up) -->
+                        <div class="envelope-flap"></div>
+                        <!-- Envelope Pocket (front lower part) -->
+                        <div class="envelope-pocket"></div>
+
+                        <!-- Invitation Letter (slides out) -->
+                        <div class="invitation-letter">
+                            <div class="letter-border">
+                                <div class="corner c-top-left"></div>
+                                <div class="corner c-top-right"></div>
+                                <div class="corner c-bottom-left"></div>
+                                <div class="corner c-bottom-right"></div>
+
+                                <div class="letter-content">
+                                    <div class="letter-grid">
+                                        <!-- Left: Bride & Groom -->
+                                        <div class="col-left">
+                                            <span class="badge">SAVE THE DATE</span>
+                                            <div class="names">
+                                                <span class="name">Lê Phạm Hoàng Mây</span>
+                                                <span class="amp">&</span>
+                                                <span class="name">Nguyễn Đức Hùng</span>
+                                            </div>
+                                            <div class="divider-gold">✦ ✦ ✦</div>
+                                        </div>
+
+                                        <!-- Right: Invitation Info -->
+                                        <div class="col-right">
+                                            <h3 class="invitation-hdr">TRÂN TRỌNG KÍNH MỜI</h3>
+                                            <p class="invitation-txt">
+                                                Đến dự buổi tiệc thành hôn chung vui cùng gia đình chúng tôi tại trung tâm tổ chức sự kiện.
+                                            </p>
+                                            <div class="details-box">
+                                                <div class="row">
+                                                    <span class="lbl">THỜI GIAN:</span>
+                                                    <span class="txt">17:30 | Thứ Sáu, 24.07.2026</span>
+                                                </div>
+                                                <div class="row">
+                                                    <span class="lbl">ĐỊA ĐIỂM:</span>
+                                                    <span class="txt">Grand Palace, Sảnh Platinum</span>
+                                                </div>
+                                                <div class="row">
+                                                    <span class="lbl">ĐỊA CHỈ:</span>
+                                                    <span class="txt">142/18 Cộng Hòa, Q. Tân Bình</span>
+                                                </div>
+                                            </div>
+                                            <p class="signature">Mây & Hùng</p>
+                                        </div>
                                     </div>
                                 </div>
-                                <p class="signature">Mây & Hùng</p>
                             </div>
+                        </div>
+
+                        <!-- Wax Seal (Clickable to open) -->
+                        <div class="wax-seal" id="envelope-seal">
+                            <div class="seal-inner">M&H</div>
                         </div>
                     </div>
                 </div>
+
+                <div class="controls">
+                    <button class="btn-replay" id="btn-replay">XEM LẠI</button>
+                </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <div class="controls">
-        <button class="btn-replay" id="btn-replay">XEM LẠI</button>
-    </div>
+        <!-- SECTION 3: THÔNG TIN SỰ KIỆN -->
+        <section id="event-info" class="event-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="header-pre">Thời Gian</span>
+                    <h2 class="section-title">Đếm Ngược Ngày Trọng Đại</h2>
+                    <div class="header-divider"></div>
+                </div>
 
+                <div class="event-time-card">
+                    <div class="time-header">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar">
+                            <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                            <line x1="16" x2="16" y1="2" y2="6" />
+                            <line x1="8" x2="8" y1="2" y2="6" />
+                            <line x1="3" x2="21" y1="10" y2="10" />
+                        </svg>
+                        <span>Thời Gian</span>
+                    </div>
+                    <p class="time-detail-large">Thứ Sáu, ngày 24 tháng 07 năm 2026</p>
+                </div>
+
+                <!-- COUNTDOWN TIMER -->
+                <div class="countdown-container" id="countdown-timer">
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="days">00</span>
+                        <span class="countdown-label">Ngày</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="hours">00</span>
+                        <span class="countdown-label">Giờ</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="minutes">00</span>
+                        <span class="countdown-label">Phút</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="seconds">00</span>
+                        <span class="countdown-label">Giây</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <p class="footer-initials">M & H</p>
+                <p class="footer-date">24.07.2026</p>
+                <div class="footer-divider"></div>
+                <p class="footer-thankyou">Trân trọng cảm ơn quý khách!</p>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Vanilla Javascript Logic -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const wrapper = document.getElementById('wrapper');
+            const wrapper = document.getElementById('wedding-envelope-wrapper');
             const replayBtn = document.getElementById('btn-replay');
 
             // Plays envelope sequence: Flap (0s) -> Letter slide out (0.6s) -> Tilt (1.0s) -> Text fade (1.5s)
@@ -522,8 +1353,167 @@
             setTimeout(playAnimation, 500);
 
             // Controls
-            replayBtn.addEventListener('click', playAnimation);
-            wrapper.addEventListener('click', playAnimation);
+            if (replayBtn) {
+                replayBtn.addEventListener('click', playAnimation);
+            }
+            if (wrapper) {
+                wrapper.addEventListener('click', playAnimation);
+            }
+
+            // 1. DYNAMIC COUNTDOWN TIMER
+            const weddingDate = new Date('2026-07-24T17:30:00').getTime();
+            
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = weddingDate - now;
+                
+                const daysElement = document.getElementById('days');
+                const hoursElement = document.getElementById('hours');
+                const minutesElement = document.getElementById('minutes');
+                const secondsElement = document.getElementById('seconds');
+                
+                if (distance < 0) {
+                    if (daysElement) daysElement.innerText = '00';
+                    if (hoursElement) hoursElement.innerText = '00';
+                    if (minutesElement) minutesElement.innerText = '00';
+                    if (secondsElement) secondsElement.innerText = '00';
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                if (daysElement) daysElement.innerText = String(days).padStart(2, '0');
+                if (hoursElement) hoursElement.innerText = String(hours).padStart(2, '0');
+                if (minutesElement) minutesElement.innerText = String(minutes).padStart(2, '0');
+                if (secondsElement) secondsElement.innerText = String(seconds).padStart(2, '0');
+            }
+            
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            // 2. BACKGROUND MUSIC CONTROLLER
+            const audioControl = document.getElementById('audio-control');
+            const bgMusic = document.getElementById('bg-music');
+            let hasPlayed = false;
+            
+            function playBackgroundMusic() {
+                if (bgMusic && bgMusic.paused) {
+                    bgMusic.play()
+                        .then(() => {
+                            audioControl.classList.add('playing');
+                            hasPlayed = true;
+                        })
+                        .catch(err => {
+                            console.log('Tự động phát nhạc bị trình duyệt chặn. Sẽ phát khi có tương tác trực tiếp.');
+                        });
+                }
+            }
+            
+            function pauseBackgroundMusic() {
+                if (bgMusic && !bgMusic.paused) {
+                    bgMusic.pause();
+                    audioControl.classList.remove('playing');
+                }
+            }
+
+            if (audioControl && bgMusic) {
+                audioControl.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Avoid triggering envelope click
+                    if (bgMusic.paused) {
+                        playBackgroundMusic();
+                    } else {
+                        pauseBackgroundMusic();
+                    }
+                });
+            }
+
+            document.addEventListener('click', () => {
+                if (!hasPlayed) {
+                    playBackgroundMusic();
+                }
+            }, { once: true });
+
+            // 3. CANVAS BLOSSOM/PETALS DRIFT ANIMATION
+            const canvas = document.getElementById('blossom-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let width = canvas.width = window.innerWidth;
+                let height = canvas.height = window.innerHeight;
+                
+                window.addEventListener('resize', () => {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
+                });
+                
+                const petalCount = Math.min(35, Math.floor(width / 30));
+                const petals = [];
+                
+                class Petal {
+                    constructor() {
+                        this.reset();
+                        this.y = Math.random() * height; // Distribute vertically
+                    }
+                    
+                    reset() {
+                        this.x = Math.random() * width + 50;
+                        this.y = -20;
+                        this.size = Math.random() * 8 + 6;
+                        this.speedY = Math.random() * 1.2 + 0.8;
+                        this.speedX = -(Math.random() * 0.8 + 0.4);
+                        this.opacity = Math.random() * 0.4 + 0.4;
+                        this.rotation = Math.random() * Math.PI * 2;
+                        this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+                        this.swing = Math.random() * Math.PI;
+                        this.swingSpeed = Math.random() * 0.02 + 0.01;
+                    }
+                    
+                    update() {
+                        this.y += this.speedY;
+                        this.swing += this.swingSpeed;
+                        this.x += this.speedX + Math.sin(this.swing) * 0.3;
+                        this.rotation += this.rotationSpeed;
+                        
+                        if (this.y > height + 20 || this.x < -20 || this.x > width + 20) {
+                            this.reset();
+                        }
+                    }
+                    
+                    draw() {
+                        ctx.save();
+                        ctx.translate(this.x, this.y);
+                        ctx.rotate(this.rotation);
+                        
+                        ctx.beginPath();
+                        ctx.ellipse(0, 0, this.size, this.size / 1.8, 0, 0, 2 * Math.PI);
+                        
+                        const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, this.size);
+                        grad.addColorStop(0, `rgba(255, 200, 210, ${this.opacity})`);
+                        grad.addColorStop(1, `rgba(240, 140, 160, ${this.opacity * 0.4})`);
+                        
+                        ctx.fillStyle = grad;
+                        ctx.fill();
+                        ctx.restore();
+                    }
+                }
+                
+                for (let i = 0; i < petalCount; i++) {
+                    petals.push(new Petal());
+                }
+                
+                function animate() {
+                    ctx.clearRect(0, 0, width, height);
+                    petals.forEach(petal => {
+                        petal.update();
+                        petal.draw();
+                    });
+                    requestAnimationFrame(animate);
+                }
+                
+                animate();
+            }
         });
     </script>
 </body>
