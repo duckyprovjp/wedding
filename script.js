@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // -------------------------------------------------------------
     // 1. DYNAMIC COUNTDOWN TIMER
     // -------------------------------------------------------------
-    const weddingDate = new Date('2027-04-27T17:30:00').getTime();
+    const weddingDate = new Date('2026-07-24T18:00:00').getTime();
     
     function updateCountdown() {
         const now = new Date().getTime();
