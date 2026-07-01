@@ -52,36 +52,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // -------------------------------------------------------------
-    // 2. ENVELOPE INTERACTION (OPEN, CLOSE & MODAL ZOOM)
+    // 2. ENVELOPE INTERACTION (OPEN & CLOSE)
     // -------------------------------------------------------------
     const envelope = document.getElementById('wedding-envelope');
-    const seal = document.getElementById('envelope-seal');
     const wrapper = document.querySelector('.envelope-wrapper');
-    const invitationModal = document.getElementById('invitation-modal');
-    const modalClose = document.getElementById('modal-close');
-    const modalBackdrop = document.querySelector('.modal-backdrop');
     
     if (envelope) {
         envelope.addEventListener('click', (e) => {
-            // Check if envelope is closed
+            // Toggle open class
             if (!envelope.classList.contains('is-open')) {
                 envelope.classList.add('is-open');
                 // Reset hover tilt transforms when opening
                 envelope.style.transform = 'rotateX(0deg) rotateY(0deg)';
                 playBackgroundMusic();
-                return;
-            }
-            
-            // If envelope is open, check what was clicked
-            const letterClick = e.target.closest('.invitation-letter');
-            if (letterClick) {
-                // Open the high-fidelity modal invitation
-                if (invitationModal) {
-                    invitationModal.classList.add('is-active');
-                    document.body.style.overflow = 'hidden'; // Prevent main page scrolling
-                }
             } else {
-                // Clicked outside the letter (e.g. envelope pocket or flap), close envelope
+                // If it is already open, clicking again will close it
                 envelope.classList.remove('is-open');
                 envelope.style.transform = 'rotateX(0deg) rotateY(0deg)';
             }
@@ -111,28 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!envelope.classList.contains('is-open')) {
                 envelope.style.transform = 'rotateX(0deg) rotateY(0deg)';
             }
-        });
-    }
-    
-    // Close Modal Event Handler
-    function closeModal() {
-        if (invitationModal) {
-            invitationModal.classList.remove('is-active');
-            document.body.style.overflow = ''; // Restore page scroll
-        }
-    }
-    
-    if (modalClose) {
-        modalClose.addEventListener('click', (e) => {
-            e.stopPropagation();
-            closeModal();
-        });
-    }
-    
-    if (modalBackdrop) {
-        modalBackdrop.addEventListener('click', (e) => {
-            e.stopPropagation();
-            closeModal();
         });
     }
 
