@@ -52,25 +52,87 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // -------------------------------------------------------------
-    // 2. ENVELOPE INTERACTION (OPEN & CLOSE)
+    // 2. ENVELOPE INTERACTION (OPEN, CLOSE & MODAL ZOOM)
     // -------------------------------------------------------------
     const envelope = document.getElementById('wedding-envelope');
     const seal = document.getElementById('envelope-seal');
+    const wrapper = document.querySelector('.envelope-wrapper');
+    const invitationModal = document.getElementById('invitation-modal');
+    const modalClose = document.getElementById('modal-close');
+    const modalBackdrop = document.querySelector('.modal-backdrop');
     
     if (envelope) {
         envelope.addEventListener('click', (e) => {
-            // If envelope is closed, open it and play music
+            // Check if envelope is closed
             if (!envelope.classList.contains('is-open')) {
                 envelope.classList.add('is-open');
+                // Reset hover tilt transforms when opening
+                envelope.style.transform = 'rotateX(0deg) rotateY(0deg)';
                 playBackgroundMusic();
-            } else {
-                // If it is open, we can close it if they click the flap or outer edges,
-                // but let's allow toggling on envelope body click for playfulness.
-                // Do not close if they are selecting/clicking the text inside the letter.
-                if (!e.target.closest('.invitation-letter')) {
-                    envelope.classList.remove('is-open');
-                }
+                return;
             }
+            
+            // If envelope is open, check what was clicked
+            const letterClick = e.target.closest('.invitation-letter');
+            if (letterClick) {
+                // Open the high-fidelity modal invitation
+                if (invitationModal) {
+                    invitationModal.classList.add('is-active');
+                    document.body.style.overflow = 'hidden'; // Prevent main page scrolling
+                }
+            } else {
+                // Clicked outside the letter (e.g. envelope pocket or flap), close envelope
+                envelope.classList.remove('is-open');
+                envelope.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            }
+        });
+    }
+
+    // 3D Parallax Tilt Effect on hover (only active when closed)
+    if (wrapper && envelope) {
+        wrapper.addEventListener('mousemove', (e) => {
+            if (!envelope.classList.contains('is-open')) {
+                const rect = wrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const xc = rect.width / 2;
+                const yc = rect.height / 2;
+                
+                const maxTilt = 15; // Max tilt rotation in degrees
+                const rotateY = ((x - xc) / xc) * maxTilt;
+                const rotateX = -((y - yc) / yc) * maxTilt;
+                
+                envelope.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            }
+        });
+
+        wrapper.addEventListener('mouseleave', () => {
+            if (!envelope.classList.contains('is-open')) {
+                envelope.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            }
+        });
+    }
+    
+    // Close Modal Event Handler
+    function closeModal() {
+        if (invitationModal) {
+            invitationModal.classList.remove('is-active');
+            document.body.style.overflow = ''; // Restore page scroll
+        }
+    }
+    
+    if (modalClose) {
+        modalClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeModal();
+        });
+    }
+    
+    if (modalBackdrop) {
+        modalBackdrop.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeModal();
         });
     }
 

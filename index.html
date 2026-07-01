@@ -146,6 +146,11 @@
                     <p class="letter-signature">Mây & Hùng</p>
                   </div>
                 </div>
+                <!-- Elegant Zoom Badge to suggest clickability -->
+                <div class="zoom-badge">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                  <span>Chạm để mở rộng</span>
+                </div>
               </div>
 
               <!-- Wax Seal (Clickable to open) -->
@@ -220,6 +225,66 @@
         </div>
       </footer>
     </main>
+
+    <!-- Full-screen invitation modal -->
+    <div id="invitation-modal" class="modal-overlay">
+      <div class="modal-backdrop"></div>
+      <div class="modal-wrapper">
+        <button class="modal-close-btn" id="modal-close" aria-label="Đóng thư mời">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+        </button>
+        <div class="modal-letter">
+          <div class="modal-letter-border">
+            <!-- Elegant decorative gold corners -->
+            <div class="corner-ornament ornament-top-left"></div>
+            <div class="corner-ornament ornament-top-right"></div>
+            <div class="corner-ornament ornament-bottom-left"></div>
+            <div class="corner-ornament ornament-bottom-right"></div>
+            
+            <div class="modal-letter-content">
+              <div class="modal-letter-header">
+                <span class="modal-letter-badge">SAVE THE DATE</span>
+                <div class="modal-couple-names">
+                  <span class="m-name">Lê Phạm Hoàng Mây</span>
+                  <span class="m-amp">&</span>
+                  <span class="m-name">Nguyễn Đức Hùng</span>
+                </div>
+                <div class="modal-gold-divider">✦ ✦ ✦</div>
+              </div>
+              
+              <div class="modal-letter-body">
+                <h3 class="modal-invitation-title">TRÂN TRỌNG KÍNH MỜI</h3>
+                <p class="modal-invitation-text">
+                  Vui lòng bớt chút thời gian vàng ngọc đến chung vui cùng gia đình chúng tôi tại buổi tiệc thành hôn.
+                </p>
+                
+                <div class="modal-details-grid">
+                  <div class="modal-detail-item">
+                    <div class="item-label">NGÀY CƯỚI</div>
+                    <div class="item-val">Thứ Sáu, 24.07.2026</div>
+                  </div>
+                  <div class="modal-detail-item">
+                    <div class="item-label">THỜI GIAN</div>
+                    <div class="item-val">Đón khách: 17:30 | Khai tiệc: 18:00</div>
+                  </div>
+                  <div class="modal-detail-item">
+                    <div class="item-label">ĐỊA ĐIỂM</div>
+                    <div class="item-val" style="font-weight: 600;">Trung Tâm Hội Nghị Tiệc Cưới Grand Palace</div>
+                    <div class="item-sub-val">Sảnh Platinum, 142/18 Cộng Hòa, Phường 4, Quận Tân Bình, TP. HCM</div>
+                  </div>
+                </div>
+                
+                <p class="modal-thankyou">Sự hiện diện của Quý khách là niềm hạnh phúc lớn nhất của chúng tôi!</p>
+              </div>
+              
+              <div class="modal-letter-footer">
+                <p class="modal-signature">Mây & Hùng</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Custom script -->
     <script src="script.js"></script>
