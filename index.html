@@ -1,259 +1,607 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lê Phạm Hoàng Mây & Nguyễn Đức Hùng - Save The Date</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lễ Cưới & Đếm Ngược Ngày Trọng Đại</title>
+  
+  <!-- Premium elegant fonts from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <!-- Google Fonts for premium typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
-      rel="stylesheet"
-    />
+  <style>
+    /* -------------------------------------------------------------
+       DESIGN SYSTEM & VARIABLES
+       ------------------------------------------------------------- */
+    :root {
+      --color-bg: #151518;
+      --color-kraft: #d2b48c;
+      --color-kraft-dark: #b8976c;
+      --color-kraft-light: #e6cba5;
+      --color-paper: #FFFDFB;
+      --color-accent: #8a3033;
+      --color-slate: #2f3542;
+      --easing: cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-    <!-- Custom stylesheet -->
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <!-- Ambient background canvas for floating blossom petals -->
-    <canvas id="blossom-canvas"></canvas>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: var(--color-bg);
+      background-image: radial-gradient(rgba(210, 180, 140, 0.05) 1px, transparent 0);
+      background-size: 24px 24px;
+      font-family: 'Playfair Display', serif;
+      overflow: hidden;
+      perspective: 1200px;
+    }
 
-    <!-- Aurora gradient background effects -->
-    <div class="aurora-glow glow-1"></div>
-    <div class="aurora-glow glow-2"></div>
-    <div class="aurora-glow glow-3"></div>
+    /* -------------------------------------------------------------
+       BACKDROP EFFECT
+       ------------------------------------------------------------- */
+    .backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(10, 10, 12, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 8;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s var(--easing);
+    }
+    .backdrop.is-active {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
-    <!-- Floating Audio Control -->
-    <div
-      class="audio-control-container"
-      id="audio-control"
-      title="Bật/Tắt Nhạc"
-    >
-      <div class="music-note-icon">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="lucide lucide-music"
-        >
-          <path d="M9 18V5l12-2v13" />
-          <circle cx="6" cy="18" r="3" />
-          <circle cx="18" cy="16" r="3" />
-        </svg>
+    /* -------------------------------------------------------------
+       ENVELOPE STRUCTURE
+       ------------------------------------------------------------- */
+    .envelope-container {
+      position: relative;
+      width: 400px;
+      height: 280px;
+      transform-style: preserve-3d;
+      cursor: pointer;
+      z-index: 5;
+      transition: transform 0.8s var(--easing);
+    }
+
+    /* Tabletop tilt flat when open */
+    .envelope-container.is-open {
+      transform: rotateX(25deg) scale(0.95) translateY(30px);
+    }
+
+    .envelope-inside {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, #cfa878 0%, #a37f53 100%);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      z-index: 1;
+    }
+
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 52%;
+      background-color: var(--color-kraft-light);
+      clip-path: polygon(0 0, 50% 100%, 100% 0);
+      transform-origin: top;
+      z-index: 4;
+      transition: transform 0.6s var(--easing), z-index 0.05s linear 0.3s;
+      transform: rotateX(0deg);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* Flip flap open and adjust z-index to fall behind inside wall */
+    .envelope-container.is-open .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope-pocket {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--color-kraft);
+      clip-path: polygon(0 35%, 50% 60%, 100% 35%, 100% 100%, 0 100%);
+      border-radius: 0 0 6px 6px;
+      z-index: 3;
+      box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    /* -------------------------------------------------------------
+       INVITATION LETTER
+       ------------------------------------------------------------- */
+    .letter {
+      position: absolute;
+      bottom: 6px;
+      left: 4%;
+      width: 92%;
+      height: 90%;
+      background-color: var(--color-paper);
+      border-radius: 4px;
+      z-index: 2;
+      padding: 16px;
+      box-sizing: border-box;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(210, 180, 140, 0.3);
+      transition: transform 0.8s var(--easing), z-index 0s linear 0.4s, box-shadow 0.8s var(--easing);
+      transform: translateY(0) scale(1);
+    }
+
+    /* Step 2: Slide up from pocket and scale slightly */
+    .letter.is-slid {
+      transform: translateY(-55%) scale(1.05);
+      z-index: 10;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Step 3: Zoom full screen modal overlay */
+    .letter.is-zoomed {
+      transform: translateY(-15%) scale(2.2);
+      z-index: 10;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(210, 180, 140, 0.15);
+    }
+
+    .letter-border {
+      border: 1px solid rgba(138, 48, 51, 0.2);
+      border-radius: 3px;
+      height: 100%;
+      width: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      padding: 8px;
+    }
+
+    /* Gold Card Corner Ornaments */
+    .corner-ornament {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-color: var(--color-kraft-dark);
+      border-style: solid;
+      opacity: 0.5;
+    }
+    .ornament-top-left { top: 4px; left: 4px; border-width: 1.5px 0 0 1.5px; }
+    .ornament-top-right { top: 4px; right: 4px; border-width: 1.5px 1.5px 0 0; }
+    .ornament-bottom-left { bottom: 4px; left: 4px; border-width: 0 0 1.5px 1.5px; }
+    .ornament-bottom-right { bottom: 4px; right: 4px; border-width: 0 1.5px 1.5px 0; }
+
+    /* -------------------------------------------------------------
+       INVITATION CONTENT
+       ------------------------------------------------------------- */
+    .letter-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .letter-badge {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.55rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--color-kraft-dark);
+      margin: 0 0 4px 0;
+    }
+
+    .letter-names {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.4rem;
+      color: var(--color-accent);
+      margin: 0 0 6px 0;
+    }
+
+    /* Small/Large message blocks switching */
+    .letter-body-short {
+      font-size: 0.65rem;
+      color: var(--color-slate);
+      font-style: italic;
+      opacity: 1;
+      max-height: 50px;
+      transition: opacity 0.4s var(--easing), max-height 0.4s var(--easing);
+    }
+    .letter.is-zoomed .letter-body-short {
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      margin: 0;
+    }
+
+    .letter-body-full {
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      transition: opacity 0.5s var(--easing) 0.2s, max-height 0s linear 0.2s;
+    }
+    .letter.is-zoomed .letter-body-full {
+      opacity: 1;
+      max-height: 600px;
+      overflow: visible;
+    }
+
+    .invitation-text {
+      font-size: 0.48rem;
+      line-height: 1.4;
+      color: var(--color-slate);
+      max-width: 170px;
+      margin: 4px 0 10px 0;
+    }
+
+    .details-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+      max-width: 170px;
+      background-color: rgba(210, 180, 140, 0.08);
+      border: 1px solid rgba(210, 180, 140, 0.15);
+      border-radius: 4px;
+      padding: 8px;
+      margin-bottom: 8px;
+      box-sizing: border-box;
+    }
+
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.45rem;
+      font-weight: 500;
+    }
+
+    .detail-item strong {
+      color: var(--color-accent);
+      letter-spacing: 0.5px;
+    }
+
+    .detail-item span {
+      color: var(--color-slate);
+    }
+
+    .signature {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.1rem;
+      color: var(--color-accent);
+      margin: 2px 0 0 0;
+    }
+
+    .letter-close {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: none;
+      border: none;
+      font-size: 0.8rem;
+      color: #aaa;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s var(--easing), color 0.2s var(--easing);
+      z-index: 12;
+    }
+    .letter.is-zoomed .letter-close {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .letter-close:hover {
+      color: var(--color-accent);
+    }
+
+    /* -------------------------------------------------------------
+       WET WAX SEAL EMBELLISHMENT
+       ------------------------------------------------------------- */
+    .wax-seal {
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, #eec778 40%, #c49949 100%);
+      border-radius: 50%;
+      z-index: 5;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.18), inset 0 2px 3px rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s var(--easing), transform 0.4s var(--easing);
+    }
+    .wax-seal:hover {
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+    .seal-inner {
+      font-family: 'Great Vibes', cursive;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: var(--color-accent);
+      border: 1px dashed rgba(138, 48, 51, 0.3);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Seal drop animation when open */
+    .envelope-container.is-open .wax-seal {
+      opacity: 0;
+      transform: translate(-50%, 30px) rotate(15deg) scale(0.8);
+      pointer-events: none;
+      transition: opacity 0.3s var(--easing), transform 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+    }
+
+    /* -------------------------------------------------------------
+       CONTROLS & ACTION BUTTONS
+       ------------------------------------------------------------- */
+    .controls {
+      margin-top: 40px;
+      z-index: 10;
+      display: flex;
+      gap: 16px;
+    }
+
+    .btn-replay {
+      background-color: transparent;
+      border: 1px solid rgba(210, 180, 140, 0.4);
+      color: var(--color-kraft-light);
+      padding: 10px 24px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      font-weight: 500;
+      text-transform: uppercase;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s var(--easing);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .btn-replay:hover {
+      background-color: var(--color-kraft-light);
+      color: var(--color-bg);
+      border-color: var(--color-kraft-light);
+      box-shadow: 0 6px 12px rgba(230, 203, 165, 0.2);
+    }
+
+    /* -------------------------------------------------------------
+       ANIMATION RESET CLASS
+       ------------------------------------------------------------- */
+    .no-transition *,
+    .no-transition *::before,
+    .no-transition *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+
+    /* -------------------------------------------------------------
+       RESPONSIVE ADJUSTMENTS
+       ------------------------------------------------------------- */
+    @media (max-width: 768px) {
+      .envelope-container {
+        transform: scale(0.85);
+      }
+      .envelope-container.is-open {
+        transform: rotateX(25deg) scale(0.8) translateY(20px);
+      }
+      .letter.is-zoomed {
+        transform: translateY(-20%) scale(1.55);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .envelope-container {
+        transform: scale(0.72);
+      }
+      .envelope-container.is-open {
+        transform: rotateX(25deg) scale(0.68) translateY(10px);
+      }
+      .letter.is-zoomed {
+        transform: translateY(-20%) scale(1.3);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Backdrop overlay when letter zoomed -->
+  <div class="backdrop" id="backdrop"></div>
+
+  <!-- Main Envelope Container -->
+  <div class="envelope-container" id="envelope">
+    <!-- Flap top -->
+    <div class="envelope-flap"></div>
+    
+    <!-- Inside Back Wall -->
+    <div class="envelope-inside"></div>
+    
+    <!-- Floating Letter Card -->
+    <div class="letter" id="letter">
+      <div class="letter-border">
+        <div class="corner-ornament ornament-top-left"></div>
+        <div class="corner-ornament ornament-top-right"></div>
+        <div class="corner-ornament ornament-bottom-left"></div>
+        <div class="corner-ornament ornament-bottom-right"></div>
+        
+        <button class="letter-close" id="letterClose" aria-label="Đóng thư">×</button>
+
+        <div class="letter-content">
+          <span class="letter-badge">SAVE THE DATE</span>
+          <h2 class="letter-names">Mây & Hùng</h2>
+          
+          <!-- Small/Short invitation intro -->
+          <div class="letter-body-short">
+            <p>Trân Trọng Kính Mời</p>
+          </div>
+          
+          <!-- Detailed invitation content (revealed on zoom) -->
+          <div class="letter-body-full">
+            <p class="invitation-text">
+              Đến dự buổi tiệc chung vui, chứng kiến khoảnh khắc chúng tôi chính thức nên duyên vợ chồng.
+            </p>
+            <div class="details-grid">
+              <div class="detail-item">
+                <strong>NGÀY CƯỚI</strong>
+                <span>Thứ Sáu, 24.07.2026</span>
+              </div>
+              <div class="detail-item">
+                <strong>THỜI GIAN</strong>
+                <span>17:30 Đón Khách | 18:00 Khai Tiệc</span>
+              </div>
+              <div class="detail-item">
+                <strong>ĐỊA ĐIỂM</strong>
+                <span>Grand Palace, Sảnh Platinum</span>
+              </div>
+            </div>
+            <p class="signature">Mây & Hùng</p>
+          </div>
+        </div>
       </div>
-      <audio id="bg-music" loop preload="auto">
-        <!-- Elegant soft piano track -->
-        <source
-          src="https://assets.codepen.io/4358584/An+Mhinn.mp3"
-          type="audio/mp3"
-        />
-      </audio>
     </div>
+    
+    <!-- Envelope pocket body -->
+    <div class="envelope-pocket"></div>
+    
+    <!-- Wax seal -->
+    <div class="wax-seal" id="seal">
+      <div class="seal-inner">M&H</div>
+    </div>
+  </div>
 
-    <!-- MAIN CONTAINER -->
-    <main>
-      <!-- SECTION 1: HERO / SAVE THE DATE -->
-      <section id="hero" class="hero-section">
-        <div class="hero-content">
-          <p class="hero-subtitle">SAVE THE DATE</p>
+  <!-- Controller actions -->
+  <div class="controls">
+    <button class="btn-replay" id="btnReplay">Replay</button>
+  </div>
 
-          <h1 class="couple-names">
-            <span class="name-first">Lê Phạm Hoàng Mây</span>
-            <span class="ampersand">&</span>
-            <span class="name-second">Nguyễn Đức Hùng</span>
-          </h1>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const envelope = document.getElementById('envelope');
+      const letter = document.getElementById('letter');
+      const backdrop = document.getElementById('backdrop');
+      const btnReplay = document.getElementById('btnReplay');
+      const letterClose = document.getElementById('letterClose');
+      
+      let state = 'closed'; // State machine: 'closed', 'opening', 'open', 'closing'
+      let timeouts = [];
 
-          <div class="hero-divider">
-            <span class="line"></span>
-            <span class="symbol">✦</span>
-            <span class="line"></span>
-          </div>
+      function clearAllTimeouts() {
+        timeouts.forEach(t => clearTimeout(t));
+        timeouts = [];
+      }
 
-          <p class="hero-description">
-            Chúng tôi vô cùng hạnh phúc được thông báo về ngày trọng đại của
-            cuộc đời mình.<br />
-            Sự hiện diện của bạn là món quà tuyệt vời nhất dành cho chúng tôi!
-          </p>
+      // Step-by-step trigger timelines
+      function openSequence() {
+        if (state !== 'closed') return;
+        state = 'opening';
 
-          <div class="hero-date">
-            <span class="date-num">24</span>
-            <span class="date-dot">.</span>
-            <span class="date-num">07</span>
-            <span class="date-dot">.</span>
-            <span class="date-num">2026</span>
-          </div>
-        </div>
+        // 1. Flip lid flap open (starts at 0s)
+        envelope.classList.add('is-open');
 
-        <a
-          href="#invitation"
-          class="scroll-indicator"
-          aria-label="Cuộn xuống để xem lời mời"
-        >
-          <span class="scroll-text">Xem Lời Mời</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-chevron-down"
-          >
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </a>
-      </section>
+        // 2. Slide letter up from inside (starts at 0.5s when flap is fully vertical/backwards)
+        timeouts.push(setTimeout(() => {
+          letter.classList.add('is-slid');
+        }, 500));
 
-      <!-- SECTION 2: LỜI MỜI TRÂN TRỌNG -->
-      <section id="invitation" class="invitation-section">
-        <div class="section-container">
-          <blockquote class="love-quote">
-            "Tình yêu không phải là nhìn chằm chằm vào nhau,<br />mà là cùng
-            nhau nhìn về một hướng."
-          </blockquote>
+        // 3. Zoom letter into modal (starts at 1.1s when slide-up is complete)
+        timeouts.push(setTimeout(() => {
+          letter.classList.add('is-zoomed');
+          backdrop.classList.add('is-active');
+          state = 'open';
+        }, 1100));
+      }
 
-          <p class="envelope-instruction">
-            Chạm vào sáp niêm phong để mở thư mời
-          </p>
+      function closeSequence() {
+        if (state !== 'open') return;
+        state = 'closing';
 
-          <!-- Interactive Envelope -->
-          <div class="envelope-wrapper">
-            <div class="envelope" id="wedding-envelope">
-              <!-- Envelope Front Flap (folds up) -->
-              <div class="envelope-flap"></div>
-              <!-- Envelope Pocket (front lower part) -->
-              <div class="envelope-pocket"></div>
+        // 1. Zoom out letter (starts at 0s)
+        letter.classList.remove('is-zoomed');
+        backdrop.classList.remove('is-active');
 
-              <!-- Invitation Letter (slides out) -->
-              <div class="invitation-letter">
-                <div class="letter-border">
-                  <!-- Elegant decorative gold corners -->
-                  <div class="corner-ornament ornament-top-left"></div>
-                  <div class="corner-ornament ornament-top-right"></div>
-                  <div class="corner-ornament ornament-bottom-left"></div>
-                  <div class="corner-ornament ornament-bottom-right"></div>
+        // 2. Slide letter back inside pocket (starts at 0.4s)
+        timeouts.push(setTimeout(() => {
+          letter.classList.remove('is-slid');
+        }, 400));
 
-                  <div class="letter-grid-content">
-                    <!-- Left Column: Names -->
-                    <div class="letter-col-left">
-                      <span class="letter-badge">SAVE THE DATE</span>
-                      <div class="letter-names">
-                        <span class="l-name-first">Lê Phạm Hoàng Mây</span>
-                        <span class="l-amp">&</span>
-                        <span class="l-name-second">Nguyễn Đức Hùng</span>
-                      </div>
-                      <div class="letter-divider-gold">✦ ✦ ✦</div>
-                    </div>
+        // 3. Flip lid flap closed (starts at 0.9s)
+        timeouts.push(setTimeout(() => {
+          envelope.classList.remove('is-open');
+          state = 'closed';
+        }, 900));
+      }
 
-                    <!-- Right Column: Details -->
-                    <div class="letter-col-right">
-                      <h3 class="letter-invitation-hdr">TRÂN TRỌNG KÍNH MỜI</h3>
-                      <p class="letter-invitation-txt">
-                        Đến dự buổi tiệc chung vui, chứng kiến khoảnh khắc chúng tôi chính thức nên duyên vợ chồng.
-                      </p>
-                      <div class="letter-details-box">
-                        <div class="detail-row">
-                          <span class="detail-lbl">THỜI GIAN:</span>
-                          <span class="detail-txt">17:30 | Thứ Sáu, 24.07.2026</span>
-                        </div>
-                        <div class="detail-row">
-                          <span class="detail-lbl">ĐỊA ĐIỂM:</span>
-                          <span class="detail-txt">Grand Palace, Sảnh Platinum</span>
-                        </div>
-                        <div class="detail-row">
-                          <span class="detail-lbl">ĐỊA CHỈ:</span>
-                          <span class="detail-txt font-light">142/18 Cộng Hòa, Q. Tân Bình, TP. HCM</span>
-                        </div>
-                      </div>
-                      <p class="letter-signature-text">Mây & Hùng</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      // Clicking envelope triggers open/close sequence
+      envelope.addEventListener('click', (e) => {
+        if (state === 'closed') {
+          openSequence();
+        } else if (state === 'open' && !e.target.closest('.letter-content')) {
+          closeSequence();
+        }
+      });
 
-              <!-- Wax Seal (Clickable to open) -->
-              <div class="wax-seal" id="envelope-seal">
-                <div class="seal-inner">M&H</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      // Closing from the modal close icon
+      letterClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeSequence();
+      });
 
-      <!-- SECTION 3: THÔNG TIN SỰ KIỆN -->
-      <section id="event-info" class="event-section">
-        <div class="section-container">
-          <div class="section-header">
-            <span class="header-pre">Thời Gian</span>
-            <h2 class="section-title">Đếm Ngược Ngày Trọng Đại</h2>
-            <div class="header-divider"></div>
-          </div>
+      // Clicking background overlay closes it
+      backdrop.addEventListener('click', (e) => {
+        closeSequence();
+      });
 
-          <div class="event-time-card">
-            <div class="time-header">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-calendar"
-              >
-                <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-                <line x1="16" x2="16" y1="2" y2="6" />
-                <line x1="8" x2="8" y1="2" y2="6" />
-                <line x1="3" x2="21" y1="10" y2="10" />
-              </svg>
-              <span>Thời Gian</span>
-            </div>
-            <p class="time-detail-large">Thứ Sáu, ngày 24 tháng 07 năm 2026</p>
-          </div>
+      // Reset and run sequence instantly
+      btnReplay.addEventListener('click', (e) => {
+        e.stopPropagation();
+        clearAllTimeouts();
 
-          <!-- COUNTDOWN TIMER -->
-          <div class="countdown-container" id="countdown-timer">
-            <div class="countdown-item">
-              <span class="countdown-value" id="days">00</span>
-              <span class="countdown-label">Ngày</span>
-            </div>
-            <div class="countdown-item">
-              <span class="countdown-value" id="hours">00</span>
-              <span class="countdown-label">Giờ</span>
-            </div>
-            <div class="countdown-item">
-              <span class="countdown-value" id="minutes">00</span>
-              <span class="countdown-label">Phút</span>
-            </div>
-            <div class="countdown-item">
-              <span class="countdown-value" id="seconds">00</span>
-              <span class="countdown-label">Giây</span>
-            </div>
-          </div>
-        </div>
-      </section>
+        // 1. Add no-transition reset
+        document.body.classList.add('no-transition');
+        envelope.classList.remove('is-open');
+        letter.classList.remove('is-slid', 'is-zoomed');
+        backdrop.classList.remove('is-active');
+        state = 'closed';
 
-      <!-- FOOTER -->
-      <footer>
-        <div class="footer-content">
-          <p class="footer-initials">M & H</p>
-          <p class="footer-date">24.07.2026</p>
-          <div class="footer-divider"></div>
-          <p class="footer-thankyou">Trân trọng cảm ơn quý khách!</p>
-        </div>
-      </footer>
-    </main>
+        // Force browser render flush
+        void envelope.offsetHeight;
 
-    <!-- Custom script -->
-    <script src="script.js"></script>
-  </body>
+        // 2. Remove reset tag and trigger open sequence
+        document.body.classList.remove('no-transition');
+        setTimeout(openSequence, 100);
+      });
+    });
+  </script>
+</body>
 </html>
