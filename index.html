@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lê Phạm Hoàng Mây & Nguyễn Đức Hùng - Save The Date</title>
+    
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Ambient background canvas for floating blossom petals -->
+    <canvas id="blossom-canvas"></canvas>
+
+    <!-- Aurora gradient background effects -->
+    <div class="aurora-glow glow-1"></div>
+    <div class="aurora-glow glow-2"></div>
+    <div class="aurora-glow glow-3"></div>
+
+    <!-- Floating Audio Control -->
+    <div class="audio-control-container" id="audio-control" title="Bật/Tắt Nhạc">
+        <div class="music-note-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-music"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
+        <audio id="bg-music" loop preload="auto">
+            <!-- Elegant soft piano track -->
+            <source src="https://assets.codepen.io/4358584/An+Mhinn.mp3" type="audio/mp3">
+        </audio>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main>
+        
+        <!-- SECTION 1: HERO / SAVE THE DATE -->
+        <section id="hero" class="hero-section">
+            <div class="hero-content">
+                <p class="hero-subtitle">SAVE THE DATE</p>
+                
+                <h1 class="couple-names">
+                    <span class="name-first">Lê Phạm Hoàng Mây</span>
+                    <span class="ampersand">&</span>
+                    <span class="name-second">Nguyễn Đức Hùng</span>
+                </h1>
+                
+                <div class="hero-divider">
+                    <span class="line"></span>
+                    <span class="symbol">✦</span>
+                    <span class="line"></span>
+                </div>
+                
+                <p class="hero-description">
+                    Chúng tôi vô cùng hạnh phúc được thông báo về ngày trọng đại của cuộc đời mình.<br>
+                    Sự hiện diện của bạn là món quà tuyệt vời nhất dành cho chúng tôi!
+                </p>
+                
+                <div class="hero-date">
+                    <span class="date-num">27</span>
+                    <span class="date-dot">.</span>
+                    <span class="date-num">04</span>
+                    <span class="date-dot">.</span>
+                    <span class="date-num">2026</span>
+                </div>
+            </div>
+            
+            <a href="#invitation" class="scroll-indicator" aria-label="Cuộn xuống để xem lời mời">
+                <span class="scroll-text">Xem Lời Mời</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
+            </a>
+        </section>
+
+        <!-- SECTION 2: LỜI MỜI TRÂN TRỌNG -->
+        <section id="invitation" class="invitation-section">
+            <div class="section-container">
+                <blockquote class="love-quote">
+                    "Tình yêu không phải là nhìn chằm chằm vào nhau,<br>mà là cùng nhau nhìn về một hướng."
+                </blockquote>
+
+                <p class="envelope-instruction">Chạm vào sáp niêm phong để mở thư mời</p>
+                
+                <!-- Interactive Envelope -->
+                <div class="envelope-wrapper">
+                    <div class="envelope" id="wedding-envelope">
+                        <!-- Envelope Front Flap (folds up) -->
+                        <div class="envelope-flap"></div>
+                        <!-- Envelope Pocket (front lower part) -->
+                        <div class="envelope-pocket"></div>
+                        
+                        <!-- Invitation Letter (slides out) -->
+                        <div class="invitation-letter">
+                            <div class="letter-border">
+                                <div class="letter-content">
+                                    <h2 class="letter-title">Trân Trọng Kính Mời</h2>
+                                    <div class="letter-divider"></div>
+                                    <p class="letter-body">
+                                        đến dự buổi tiệc chung vui, chứng kiến khoảnh khắc chúng tôi chính thức nên duyên vợ chồng.
+                                    </p>
+                                    <p class="letter-signature">Mây & Hùng</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Wax Seal (Clickable to open) -->
+                        <div class="wax-seal" id="envelope-seal">
+                            <div class="seal-inner">M&H</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: THÔNG TIN SỰ KIỆN -->
+        <section id="event-info" class="event-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <span class="header-pre">Chương Trình</span>
+                    <h2 class="section-title">Lễ Cưới & Tiệc Tối</h2>
+                    <div class="header-divider"></div>
+                </div>
+
+                <div class="event-time-card">
+                    <div class="time-header">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                        <span>Thời Gian</span>
+                    </div>
+                    <p class="time-detail-large">Thứ Hai, ngày 27 tháng 04 năm 2026</p>
+                </div>
+
+                <!-- COUNTDOWN TIMER -->
+                <div class="countdown-container" id="countdown-timer">
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="days">00</span>
+                        <span class="countdown-label">Ngày</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="hours">00</span>
+                        <span class="countdown-label">Giờ</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="minutes">00</span>
+                        <span class="countdown-label">Phút</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-value" id="seconds">00</span>
+                        <span class="countdown-label">Giây</span>
+                    </div>
+                </div>
+
+                <!-- TIMELINE OF THE BIG DAY -->
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">17:30</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Đón Khách</h3>
+                            <p>Đón tiếp quý khách, chụp ảnh lưu niệm cùng cô dâu và chú rể tại khu vực sảnh tiệc.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-time">18:00</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Lễ Thành Hôn</h3>
+                            <p>Thực hiện nghi lễ cưới chính thức, trao nhẫn và những lời thề nguyền thiêng liêng.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-time">18:30</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Khai Tiệc</h3>
+                            <p>Nhập tiệc tối ấm cúng cùng những lời chúc mừng hạnh phúc từ gia đình, bạn bè.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-time">19:30</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Âm Nhạc & Chúc Mừng</h3>
+                            <p>Chương trình ca nhạc giao lưu, khiêu vũ và những khoảnh khắc kỷ niệm đáng nhớ.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: RSVP (XÁC NHẬN THAM GIA) -->
+        <section id="rsvp" class="rsvp-section">
+            <div class="section-container">
+                <div class="rsvp-card">
+                    <div class="section-header">
+                        <span class="header-pre">Phản Hồi</span>
+                        <h2 class="section-title">Xác Nhận Tham Dự</h2>
+                        <div class="header-divider"></div>
+                        <p class="rsvp-intro-text">Sự diện diện của quý khách là niềm vinh hạnh lớn cho chúng tôi. Xin vui lòng phản hồi trước ngày 15/04/2026 để chúng tôi tiện chuẩn bị chu đáo.</p>
+                    </div>
+
+                    <form id="rsvp-form" class="rsvp-form">
+                        <div class="form-group">
+                            <label for="guest-name">Họ và Tên</label>
+                            <input type="text" id="guest-name" name="name" required placeholder="Nhập tên của bạn...">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="attendance">Bạn sẽ tham gia chứ?</label>
+                                <select id="attendance" name="attendance" required>
+                                    <option value="yes" selected>Sẽ tham gia vui cùng cô dâu & chú rể</option>
+                                    <option value="no">Rất tiếc không thể tham gia</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" id="companion-group">
+                                <label for="companions">Số người tham dự</label>
+                                <select id="companions" name="companions">
+                                    <option value="1" selected>1 người</option>
+                                    <option value="2">2 người</option>
+                                    <option value="3">3 người</option>
+                                    <option value="4">4 người hoặc hơn</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wishes">Lời chúc dành cho cặp đôi</label>
+                            <textarea id="wishes" name="wishes" rows="4" placeholder="Gửi lời chúc tốt đẹp nhất của bạn..."></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            <span>Gửi Xác Nhận</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send"><line x1="22" x2="11" y1="2" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                        </button>
+                    </form>
+
+                    <!-- Success Message (initially hidden) -->
+                    <div id="rsvp-success" class="rsvp-success-card hidden">
+                        <div class="success-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-handshake"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08v0c.8.8 2.1.8 2.9 0L15 8"/><path d="m15 14-2.88-2.88a2.1 2.1 0 0 0-3 0v0a2.1 2.1 0 0 0 0 3L12 17"/></svg>
+                        </div>
+                        <h3>Cảm Ơn Bạn!</h3>
+                        <p class="success-message">Thông tin xác nhận của bạn đã được gửi thành công. Sự hiện diện của bạn là món quà ý nghĩa nhất dành cho Mây & Hùng!</p>
+                        <button type="button" id="rsvp-reset-btn" class="reset-btn">Gửi phản hồi khác</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-content">
+                <p class="footer-initials">M & H</p>
+                <p class="footer-date">27.04.2026</p>
+                <div class="footer-divider"></div>
+                <p class="footer-thankyou">Trân trọng cảm ơn quý khách!</p>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Custom script -->
+    <script src="script.js"></script>
+</body>
+</html>
