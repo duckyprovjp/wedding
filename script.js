@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // -------------------------------------------------------------
     // 1. DYNAMIC COUNTDOWN TIMER
     // -------------------------------------------------------------
-    const weddingDate = new Date('2026-04-27T17:30:00').getTime();
+    const weddingDate = new Date('2027-04-27T17:30:00').getTime();
     
     function updateCountdown() {
         const now = new Date().getTime();
@@ -215,71 +215,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // -------------------------------------------------------------
-    // 5. RSVP FORM SUBMISSION AND MOCK SAVING
-    // -------------------------------------------------------------
-    const rsvpForm = document.getElementById('rsvp-form');
-    const rsvpSuccess = document.getElementById('rsvp-success');
-    const rsvpResetBtn = document.getElementById('rsvp-reset-btn');
-    const attendanceSelect = document.getElementById('attendance');
-    const companionGroup = document.getElementById('companion-group');
-    
-    // Toggle companion dropdown based on attendance status
-    if (attendanceSelect && companionGroup) {
-        attendanceSelect.addEventListener('change', () => {
-            if (attendanceSelect.value === 'no') {
-                companionGroup.classList.add('hidden');
-            } else {
-                companionGroup.classList.remove('hidden');
-            }
-        });
-    }
-
-    if (rsvpForm && rsvpSuccess) {
-        rsvpForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Capture values (could send to backend API or Webhook)
-            const formData = {
-                name: document.getElementById('guest-name').value,
-                attendance: document.getElementById('attendance').value,
-                companions: document.getElementById('attendance').value === 'yes' ? document.getElementById('companions').value : '0',
-                wishes: document.getElementById('wishes').value
-            };
-            
-            console.log('Dữ liệu RSVP nhận được:', formData);
-            
-            // Animate transition
-            rsvpForm.style.opacity = '0';
-            setTimeout(() => {
-                rsvpForm.classList.add('hidden');
-                rsvpSuccess.classList.remove('hidden');
-                rsvpSuccess.style.opacity = '0';
-                
-                // Fade in success screen
-                setTimeout(() => {
-                    rsvpSuccess.style.transition = 'opacity 0.5s ease';
-                    rsvpSuccess.style.opacity = '1';
-                }, 50);
-            }, 300);
-        });
-    }
-    
-    if (rsvpResetBtn && rsvpForm && rsvpSuccess) {
-        rsvpResetBtn.addEventListener('click', () => {
-            // Animate back to form
-            rsvpSuccess.style.opacity = '0';
-            setTimeout(() => {
-                rsvpSuccess.classList.add('hidden');
-                rsvpForm.classList.remove('hidden');
-                rsvpForm.reset();
-                if (companionGroup) companionGroup.classList.remove('hidden'); // Reset dropdown display
-                
-                setTimeout(() => {
-                    rsvpForm.style.transition = 'opacity 0.5s ease';
-                    rsvpForm.style.opacity = '1';
-                }, 50);
-            }, 300);
-        });
-    }
 });
