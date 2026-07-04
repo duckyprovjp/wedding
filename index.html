@@ -213,6 +213,14 @@
         position: relative;
       }
 
+      .hero-carousel-section {
+        height: 100vh;
+        height: 100dvh;
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+      }
+
       .hero-content {
         background: rgba(255, 255, 255, 0.45);
         backdrop-filter: blur(10px);
@@ -939,7 +947,7 @@
         pointer-events: auto;
       }
 
-      .hero-section:hover .carousel-control {
+      .hero-carousel-section:hover .carousel-control {
         opacity: 1;
       }
 
@@ -997,7 +1005,7 @@
           height: 40px;
           opacity: 0.7; /* Trên điện thoại thì hiện sẵn nhưng mờ */
         }
-        .hero-section:hover .carousel-control {
+        .hero-carousel-section:hover .carousel-control {
           opacity: 0.9;
         }
         .carousel-control.prev {
@@ -1360,10 +1368,10 @@
 
     <!-- MAIN CONTAINER -->
     <main>
-      <!-- SECTION 1: HERO / SAVE THE DATE -->
+      <!-- SECTION 1: HERO CAROUSEL -->
       <section
         id="hero"
-        class="hero-section"
+        class="hero-carousel-section"
         aria-roledescription="carousel"
         aria-label="Hình ảnh kỷ niệm đám cưới"
       >
@@ -1410,36 +1418,6 @@
 
         <!-- Dark & Warm Rose Overlay -->
         <div class="carousel-overlay"></div>
-
-        <div class="hero-content">
-          <p class="hero-subtitle">SAVE THE DATE</p>
-
-          <h1 class="couple-names">
-            <span class="name-first">Lê Phạm Hoàng Mây</span>
-            <span class="ampersand">&amp;</span>
-            <span class="name-second">Nguyễn Đức Hùng</span>
-          </h1>
-
-          <div class="hero-divider">
-            <span class="line"></span>
-            <span class="symbol">✦</span>
-            <span class="line"></span>
-          </div>
-
-          <p class="hero-description">
-            Chúng tôi vô cùng hạnh phúc được thông báo về ngày trọng đại của
-            cuộc đời mình.<br />
-            Sự hiện diện của bạn là món quà tuyệt vời nhất dành cho chúng tôi!
-          </p>
-
-          <div class="hero-date">
-            <span class="date-num">24</span>
-            <span class="date-dot">.</span>
-            <span class="date-num">07</span>
-            <span class="date-dot">.</span>
-            <span class="date-num">2026</span>
-          </div>
-        </div>
 
         <!-- Elegant Controls (Arrows) -->
         <button class="carousel-control prev" aria-label="Ảnh trước">
@@ -1505,6 +1483,65 @@
             data-slide="5"
             aria-label="Trang 6"
           ></button>
+        </div>
+
+        <a
+          href="#hero-details"
+          class="scroll-indicator"
+          aria-label="Cuộn xuống để xem chi tiết thiệp mời"
+        >
+          <span class="scroll-text">Xem Ngày Trọng Đại</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-chevron-down"
+          >
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </a>
+      </section>
+
+      <!-- SECTION 1B: SAVE THE DATE DETAILS -->
+      <section
+        id="hero-details"
+        class="hero-section"
+        aria-label="Thông tin ngày cưới Save The Date"
+      >
+        <div class="hero-content">
+          <p class="hero-subtitle">SAVE THE DATE</p>
+
+          <h1 class="couple-names">
+            <span class="name-first">Lê Phạm Hoàng Mây</span>
+            <span class="ampersand">&amp;</span>
+            <span class="name-second">Nguyễn Đức Hùng</span>
+          </h1>
+
+          <div class="hero-divider">
+            <span class="line"></span>
+            <span class="symbol">✦</span>
+            <span class="line"></span>
+          </div>
+
+          <p class="hero-description">
+            Chúng tôi vô cùng hạnh phúc được thông báo về ngày trọng đại của
+            cuộc đời mình.<br />
+            Sự hiện diện của bạn là món quà tuyệt vời nhất dành cho chúng tôi!
+          </p>
+
+          <div class="hero-date">
+            <span class="date-num">24</span>
+            <span class="date-dot">.</span>
+            <span class="date-num">07</span>
+            <span class="date-dot">.</span>
+            <span class="date-num">2026</span>
+          </div>
         </div>
 
         <a
