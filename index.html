@@ -1127,7 +1127,9 @@
         justify-content: center;
         overflow: hidden;
         touch-action: none; /* Ngăn chặn cuộn màn hình trên di động */
-        transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        transition:
+          opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1),
+          transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
       }
 
       .welcome-bg {
@@ -1136,7 +1138,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-image: url('images/1783146058886_383188267042628239_383188267042628239_a3ff87fe86194072e3182ebf7da7a154.jpg');
+        background-image: url("images/1783146058886_383188267042628239_383188267042628239_a3ff87fe86194072e3182ebf7da7a154.jpg");
         background-size: cover;
         background-position: center;
         filter: blur(10px) scale(1.05); /* Tăng nhẹ kích thước tránh viền đen khi blur */
@@ -1172,7 +1174,8 @@
         width: 90%;
         transform: scale(0.95);
         opacity: 0;
-        animation: welcomeContentFadeIn 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        animation: welcomeContentFadeIn 1.5s cubic-bezier(0.25, 1, 0.5, 1)
+          forwards;
       }
 
       @keyframes welcomeContentFadeIn {
@@ -1186,7 +1189,7 @@
         font-family: var(--font-title);
         font-size: 0.85rem;
         letter-spacing: 5px;
-        color: #FEF08A; /* Soft yellow-gold */
+        color: #fef08a; /* Soft yellow-gold */
         margin-bottom: 15px;
         text-transform: uppercase;
       }
@@ -1211,12 +1214,17 @@
 
       .welcome-divider .line {
         height: 1px;
-        background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
+        background: linear-gradient(
+          to right,
+          transparent,
+          rgba(255, 255, 255, 0.5),
+          transparent
+        );
         width: 80px;
       }
 
       .welcome-divider .symbol {
-        color: #FEF08A;
+        color: #fef08a;
         font-size: 0.8rem;
       }
 
@@ -1230,7 +1238,11 @@
 
       .welcome-btn {
         position: relative;
-        background: linear-gradient(135deg, var(--color-gold-metallic) 0%, var(--color-gold) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--color-gold-metallic) 0%,
+          var(--color-gold) 100%
+        );
         border: none;
         color: var(--color-burgundy);
         padding: 16px 45px;
@@ -1249,7 +1261,9 @@
 
       .welcome-btn:hover {
         transform: scale(1.05);
-        box-shadow: 0 15px 35px rgba(212, 175, 55, 0.6), 0 0 20px rgba(255, 255, 255, 0.5);
+        box-shadow:
+          0 15px 35px rgba(212, 175, 55, 0.6),
+          0 0 20px rgba(255, 255, 255, 0.5);
         color: var(--color-burgundy-medium);
       }
 
@@ -1258,7 +1272,7 @@
       }
 
       .welcome-btn::after {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
@@ -1588,7 +1602,9 @@
               </svg>
               <span>Thời Gian</span>
             </div>
-            <p class="time-detail-large">16:30 | Thứ Sáu, ngày 24 tháng 07 năm 2026</p>
+            <p class="time-detail-large">
+              16:30 | Thứ Sáu, ngày 24 tháng 07 năm 2026
+            </p>
           </div>
 
           <div class="event-time-card">
@@ -1602,19 +1618,44 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 class="lucide lucide-map-pin"
-                style="width: 18px; height: 18px;"
+                style="width: 18px; height: 18px"
               >
                 <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
                 <circle cx="12" cy="10" r="3" />
               </svg>
               <span>Địa Điểm</span>
             </div>
-            <p class="location-pre" style="font-size: 0.95rem; letter-spacing: 2px; color: var(--color-gold); font-weight: 600; text-transform: uppercase; margin-bottom: 8px;">TẠI</p>
-            <p class="time-detail-large" style="font-size: 1.6rem; line-height: 1.3; margin-bottom: 8px;">
-              TRUNG TÂM TỔ CHỨC SỰ KIỆN - TIỆC CƯỚI<br />
-              <span style="color: var(--color-burgundy-medium); font-weight: bold;">ROYAL PALACE</span>
+            <p
+              class="location-pre"
+              style="
+                font-size: 0.95rem;
+                letter-spacing: 2px;
+                color: var(--color-gold);
+                font-weight: 600;
+                text-transform: uppercase;
+                margin-bottom: 8px;
+              "
+            >
+              TẠI
             </p>
-            <p class="location-detail-sub" style="font-size: 1.1rem; color: var(--color-slate-light); line-height: 1.4;">
+            <p
+              class="time-detail-large"
+              style="font-size: 1.6rem; line-height: 1.3; margin-bottom: 8px"
+            >
+              TRUNG TÂM TỔ CHỨC SỰ KIỆN - TIỆC CƯỚI<br />
+              <span
+                style="color: var(--color-burgundy-medium); font-weight: bold"
+                >ROYAL PALACE</span
+              >
+            </p>
+            <p
+              class="location-detail-sub"
+              style="
+                font-size: 1.1rem;
+                color: var(--color-slate-light);
+                line-height: 1.4;
+              "
+            >
               ĐƯỜNG BẮC SƠN KÉO DÀI - TỔ 7 - PHƯỜNG PHAN ĐÌNH PHÙNG<br />
               TỈNH THÁI NGUYÊN
             </p>
@@ -1663,7 +1704,7 @@
         window.scrollTo(0, 0);
 
         // 1. DYNAMIC COUNTDOWN TIMER
-        const weddingDate = new Date("2026-07-24T17:30:00").getTime();
+        const weddingDate = new Date("2026-07-24T16:30:00").getTime();
 
         function updateCountdown() {
           const now = new Date().getTime();
