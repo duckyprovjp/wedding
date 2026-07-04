@@ -59,7 +59,6 @@
             overflow-x: hidden;
             position: relative;
             min-height: 100vh;
-            perspective: 1200px;
         }
 
         /* Particle Canvas */
@@ -1388,6 +1387,9 @@
                     playNextTrack();
                 });
             }
+
+            // Tự động thử phát nhạc ngay khi vào trang
+            playBackgroundMusic();
 
             document.addEventListener('click', () => {
                 if (!hasPlayed) {
