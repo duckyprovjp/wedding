@@ -1440,6 +1440,7 @@
         }
         window.scrollTo(0, 0);
 
+        playBackgroundMusic();
         // 1. DYNAMIC COUNTDOWN TIMER
         const weddingDate = new Date("2026-07-24T17:30:00").getTime();
 
@@ -1565,7 +1566,12 @@
         playBackgroundMusic();
 
         // Lắng nghe mọi tương tác đầu tiên của người dùng để tự động phát nhạc (nếu bị trình duyệt chặn)
-        const interactionEvents = ["click", "touchstart", "mousedown", "keydown"];
+        const interactionEvents = [
+          "click",
+          "touchstart",
+          "mousedown",
+          "keydown",
+        ];
         function startMusicOnInteraction() {
           if (!hasPlayed) {
             playBackgroundMusic();
@@ -1575,7 +1581,9 @@
           });
         }
         interactionEvents.forEach((event) => {
-          document.addEventListener(event, startMusicOnInteraction, { once: true });
+          document.addEventListener(event, startMusicOnInteraction, {
+            once: true,
+          });
         });
 
         // 5. HERO CAROUSEL LOGIC
