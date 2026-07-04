@@ -1434,6 +1434,12 @@
     <!-- Vanilla Javascript Logic -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        // Cố định vị trí cuộn ban đầu ở trên cùng khi tải/tải lại trang
+        if ("scrollRestoration" in history) {
+          history.scrollRestoration = "manual";
+        }
+        window.scrollTo(0, 0);
+
         // 1. DYNAMIC COUNTDOWN TIMER
         const weddingDate = new Date("2026-07-24T17:30:00").getTime();
 
@@ -1499,7 +1505,7 @@
         // 3. BACKGROUND MUSIC CONTROLLER
         const audioControl = document.getElementById("audio-control");
         const bgMusic = document.getElementById("bg-music");
-        let hasPlayed = true;
+        let hasPlayed = false;
 
         const playlist = [
           "musics/Em Đồng Ý (I Do).mp3",
@@ -1558,15 +1564,19 @@
         // Tự động thử phát nhạc ngay khi vào trang
         playBackgroundMusic();
 
-        document.addEventListener(
-          "click",
-          () => {
-            if (!hasPlayed) {
-              playBackgroundMusic();
-            }
-          },
-          { once: true },
-        );
+        // Lắng nghe mọi tương tác đầu tiên của người dùng để tự động phát nhạc (nếu bị trình duyệt chặn)
+        const interactionEvents = ["click", "touchstart", "mousedown", "keydown"];
+        function startMusicOnInteraction() {
+          if (!hasPlayed) {
+            playBackgroundMusic();
+          }
+          interactionEvents.forEach((event) => {
+            document.removeEventListener(event, startMusicOnInteraction);
+          });
+        }
+        interactionEvents.forEach((event) => {
+          document.addEventListener(event, startMusicOnInteraction, { once: true });
+        });
 
         // 5. HERO CAROUSEL LOGIC
         const slides = document.querySelectorAll(".carousel-slide");
