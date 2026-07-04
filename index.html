@@ -1440,7 +1440,6 @@
         }
         window.scrollTo(0, 0);
 
-        playBackgroundMusic();
         // 1. DYNAMIC COUNTDOWN TIMER
         const weddingDate = new Date("2026-07-24T17:30:00").getTime();
 
@@ -1488,10 +1487,9 @@
 
         if (envelope) {
           envelope.addEventListener("click", (e) => {
-            // If envelope is closed, open it and play music
+            // If envelope is closed, open it
             if (!envelope.classList.contains("is-open")) {
               envelope.classList.add("is-open");
-              playBackgroundMusic();
             } else {
               // If it is open, we can close it if they click the flap or outer edges,
               // but let's allow toggling on envelope body click for playfulness.
