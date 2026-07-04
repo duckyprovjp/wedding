@@ -1086,9 +1086,8 @@
                 <circle cx="18" cy="16" r="3" />
             </svg>
         </div>
-        <audio id="bg-music" loop preload="auto">
-            <!-- Elegant soft piano track -->
-            <source src="https://assets.codepen.io/4358584/An+Mhinn.mp3" type="audio/mp3" />
+        <audio id="bg-music" preload="auto">
+            <source src="musics/Em Đồng Ý (I Do).mp3" type="audio/mp3" />
         </audio>
     </div>
 
@@ -1339,6 +1338,12 @@
             const bgMusic = document.getElementById('bg-music');
             let hasPlayed = false;
             
+            const playlist = [
+                'musics/Em Đồng Ý (I Do).mp3',
+                'musics/Yes I Do (Music Home Mùa 1).mp3'
+            ];
+            let currentTrackIndex = 0;
+            
             function playBackgroundMusic() {
                 if (bgMusic && bgMusic.paused) {
                     bgMusic.play()
@@ -1359,6 +1364,15 @@
                 }
             }
 
+            function playNextTrack() {
+                if (bgMusic) {
+                    currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+                    bgMusic.src = playlist[currentTrackIndex];
+                    bgMusic.load();
+                    playBackgroundMusic();
+                }
+            }
+
             if (audioControl && bgMusic) {
                 audioControl.addEventListener('click', (e) => {
                     e.stopPropagation(); // Avoid triggering envelope click
@@ -1367,6 +1381,11 @@
                     } else {
                         pauseBackgroundMusic();
                     }
+                });
+
+                // Tự động chuyển bài tiếp theo khi bài hiện tại kết thúc
+                bgMusic.addEventListener('ended', () => {
+                    playNextTrack();
                 });
             }
 
