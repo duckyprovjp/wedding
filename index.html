@@ -1733,11 +1733,16 @@
 
     <!-- Vanilla Javascript Logic -->
     <script>
+      // Cố định vị trí cuộn ban đầu ở trên cùng trước cả khi DOMContentLoaded chạy
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
+      window.addEventListener("load", () => {
+        window.scrollTo(0, 0);
+      });
+
       document.addEventListener("DOMContentLoaded", () => {
-        // Cố định vị trí cuộn ban đầu ở trên cùng khi tải/tải lại trang
-        if ("scrollRestoration" in history) {
-          history.scrollRestoration = "manual";
-        }
         window.scrollTo(0, 0);
 
         // 1. DYNAMIC COUNTDOWN TIMER
@@ -1960,6 +1965,9 @@
 
             // Play music immediately (browser allows it because of button click gesture)
             playBackgroundMusic();
+
+            // Đảm bảo cuộn về đỉnh đầu trang trước khi mở khóa cuộn
+            window.scrollTo(0, 0);
 
             // Transition welcome screen out
             welcomeScreen.style.opacity = "0";
