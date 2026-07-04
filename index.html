@@ -1113,9 +1113,202 @@
           font-size: 0.65rem;
         }
       }
+
+      /* Welcome Cover Screen */
+      .welcome-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 10000; /* Nằm trên tất cả mọi thứ */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        touch-action: none; /* Ngăn chặn cuộn màn hình trên di động */
+        transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+      }
+
+      .welcome-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('images/1783146058886_383188267042628239_383188267042628239_a3ff87fe86194072e3182ebf7da7a154.jpg');
+        background-size: cover;
+        background-position: center;
+        filter: blur(10px) scale(1.05); /* Tăng nhẹ kích thước tránh viền đen khi blur */
+        z-index: 1;
+      }
+
+      .welcome-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(92, 6, 50, 0.45) 0%,
+          rgba(30, 41, 59, 0.55) 100%
+        );
+        z-index: 2;
+      }
+
+      .welcome-content {
+        position: relative;
+        z-index: 3;
+        text-align: center;
+        padding: 50px 30px;
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: var(--border-radius-lg);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+        max-width: 500px;
+        width: 90%;
+        transform: scale(0.95);
+        opacity: 0;
+        animation: welcomeContentFadeIn 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      }
+
+      @keyframes welcomeContentFadeIn {
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .welcome-pretitle {
+        font-family: var(--font-title);
+        font-size: 0.85rem;
+        letter-spacing: 5px;
+        color: #FEF08A; /* Soft yellow-gold */
+        margin-bottom: 15px;
+        text-transform: uppercase;
+      }
+
+      .welcome-names {
+        font-family: var(--font-accent);
+        font-size: 4rem;
+        color: white;
+        line-height: 1.1;
+        margin-bottom: 15px;
+        text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .welcome-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 15px;
+        width: 100%;
+      }
+
+      .welcome-divider .line {
+        height: 1px;
+        background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), transparent);
+        width: 80px;
+      }
+
+      .welcome-divider .symbol {
+        color: #FEF08A;
+        font-size: 0.8rem;
+      }
+
+      .welcome-date {
+        font-family: var(--font-title);
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.8);
+        letter-spacing: 3px;
+        margin-bottom: 40px;
+      }
+
+      .welcome-btn {
+        position: relative;
+        background: linear-gradient(135deg, var(--color-gold-metallic) 0%, var(--color-gold) 100%);
+        border: none;
+        color: var(--color-burgundy);
+        padding: 16px 45px;
+        font-family: var(--font-title);
+        font-size: 0.95rem;
+        font-weight: bold;
+        letter-spacing: 2px;
+        border-radius: 40px;
+        cursor: pointer;
+        outline: none;
+        box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+        transition: var(--transition-smooth);
+        overflow: hidden;
+        text-transform: uppercase;
+      }
+
+      .welcome-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 15px 35px rgba(212, 175, 55, 0.6), 0 0 20px rgba(255, 255, 255, 0.5);
+        color: var(--color-burgundy-medium);
+      }
+
+      .welcome-btn:active {
+        transform: scale(0.98);
+      }
+
+      .welcome-btn::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 40px;
+        border: 2px solid var(--color-gold-metallic);
+        opacity: 0;
+        box-sizing: border-box;
+        animation: btnPulse 2s infinite;
+      }
+
+      @keyframes btnPulse {
+        0% {
+          transform: scale(1);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(1.25);
+          opacity: 0;
+        }
+      }
+
+      /* Lock scroll while welcome is active */
+      body.welcome-active {
+        overflow: hidden !important;
+        height: 100vh;
+      }
     </style>
   </head>
   <body>
+    <!-- Welcome Cover Screen -->
+    <div id="welcome-screen" class="welcome-screen">
+      <div class="welcome-bg"></div>
+      <div class="welcome-overlay"></div>
+      <div class="welcome-content">
+        <p class="welcome-pretitle">THE WEDDING OF</p>
+        <h1 class="welcome-names">Mây &amp; Hùng</h1>
+        <div class="welcome-divider">
+          <span class="line"></span>
+          <span class="symbol">✦</span>
+          <span class="line"></span>
+        </div>
+        <p class="welcome-date">24 . 07 . 2026</p>
+        <button id="enter-btn" class="welcome-btn">
+          <span>Mở Thư Mời</span>
+        </button>
+      </div>
+    </div>
+
     <!-- Ambient background canvas for floating blossom petals -->
     <canvas id="blossom-canvas"></canvas>
 
@@ -1646,6 +1839,34 @@
 
         // Start slide show
         startSlideShow();
+
+        // 6. WELCOME SCREEN TRANSITION
+        const welcomeScreen = document.getElementById("welcome-screen");
+        const enterBtn = document.getElementById("enter-btn");
+
+        // Add scroll lock class on body initially
+        document.body.classList.add("welcome-active");
+
+        if (enterBtn && welcomeScreen) {
+          enterBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+
+            // Play music immediately (browser allows it because of button click gesture)
+            playBackgroundMusic();
+
+            // Transition welcome screen out
+            welcomeScreen.style.opacity = "0";
+            welcomeScreen.style.transform = "scale(1.05)";
+
+            // Unlock scroll
+            document.body.classList.remove("welcome-active");
+
+            // Remove from DOM after transition completes
+            setTimeout(() => {
+              welcomeScreen.remove();
+            }, 1200);
+          });
+        }
 
         // 4. CANVAS BLOSSOM/PETALS DRIFT ANIMATION
         const canvas = document.getElementById("blossom-canvas");
